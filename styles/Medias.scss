@@ -1,0 +1,66 @@
+.Medias {
+  min-height: calc(100vh - 53px);
+  background-color: #0F5F6B;
+
+  &-item {
+    width: 100%;
+    height: 50vh;
+    background-size: cover;
+    background-position: center;
+    display: inline-block;
+    float: left;
+
+    @media screen and (min-width: 768px) {
+      width: 33.333333%;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.Modal {
+  background-color: #0F5F6B;
+
+  &-slide {
+    width: 100%;
+    height: 100vh;
+
+    & > div {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      @media screen and (min-width: 768px) {
+        background-size: cover;
+      }
+    }
+
+    & p {
+      height: 100vh;
+    }
+  }
+
+  .slick-arrow {
+    z-index: 100;
+    bottom: 40px;
+    top: auto;
+    transform: none;
+    width: 30px;
+    opacity: 1;
+    transition: opacity 300ms;
+
+    &:before {
+      content: '';
+    }
+  }
+
+  .slick-prev {
+    left: 25px;
+  }
+
+  .slick-next {
+    right: 25px;
+  }
+}

@@ -1,0 +1,70 @@
+.Posts {
+  min-height: calc(100vh - 53px);
+  background-color: #0F5F6B;
+
+  &-item {
+    width: 100%;
+    height: 50vh;
+    color: #fff;
+    position: relative;
+    float: left;
+
+    @media screen and (min-width: 768px) {
+      width: 33.333333%;
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .Page-otherSection-overlay {
+        opacity: 0;
+        transition: opacity 500ms;
+      }
+
+      .Page-otherSection-title {
+        text-decoration: underline;
+      }
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+
+    &-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      opacity: 0.3;
+      transition: opacity 500ms;
+    }
+
+    &-content {
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      padding: 10px;
+
+      @media screen and (min-width: 768px) {
+        position: absolute;
+        top: auto;
+        bottom: 20px;
+        padding: 25px;
+        transform: none;
+      }
+    }
+
+    &-button {
+      display: inline-block;
+
+      svg {
+        width: 15px;
+        margin-left: 7px;
+        position: relative;
+        top: 2px;
+      }
+    }
+  }
+}

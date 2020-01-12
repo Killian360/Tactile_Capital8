@@ -1,0 +1,15 @@
+.Button {
+  border: 1px solid #fff;
+  padding: 10px 20px;
+
+  &:hover {
+    background-color: #0F5F6B;
+    border: 1px solid transparent;
+    color: #fff;
+    cursor: pointer;
+
+    svg {
+      fill: #fff !important;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+.Legale {
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 35px auto 0 auto;
+
+  @media screen and (min-width: 768px) {
+    margin: 0 auto;
+  }
+
+  &-title {
+    text-align: center;
+    margin: 50px 0;
+    color: #0F5F6B;
+    font-size: 4rem;
+    line-height: 4rem;
+  }
+
+  &-content {
+    & h4 {
+      font-size: 1.1rem;
+      font-family: 'Poppins-Bold';
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #0F5F6B;
+      margin-top: 25px;
+    }
+
+    & p {
+      color: #999;
+      font-size: 1.2rem;
+
+      &.primary {
+        color: #0F5F6B;
+        font-size: 1.4rem;
+      }
+    }
+
+    & strong {
+      font-family: 'Poppins-Bold';
+    }
+  }
+}

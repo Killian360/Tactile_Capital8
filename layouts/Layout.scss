@@ -1,0 +1,108 @@
+.Layout {
+  height: 100%;
+
+  &-footer {
+    background-color: #0F5F6B;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 20px 5px 20px;
+    position: relative;
+
+    @media screen and (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    &-back {
+      // display: none;
+      font-size: 1.2rem;
+      align-items: center;
+      text-align: left;
+      width: 33.333333%;
+
+      // @media screen and (min-width: 768px) {
+        display: flex;
+      // }
+
+      &-news {
+        position: absolute;
+        top: -60px;
+        color: #0F5F6B;
+        width: 100%;
+        left: 15px;
+        right: 0;
+
+        & svg {
+          fill: #0F5F6B !important;
+        }
+
+        @media screen and (min-width: 768px) {
+          position: static;
+          color: #fff;
+
+          & svg {
+            fill: #fff !important;
+          }
+        }
+      }
+
+      &-home {
+        display: none;
+
+        @media screen and (min-width: 768px) {
+          display: inline-block;
+        }
+      }
+
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      svg {
+        width: 15px;
+        margin-right: 7px;
+        position: relative;
+        bottom: -3px;
+      }
+    }
+
+    &-logo {
+      width: 100%;
+      text-align: center;
+
+      @media screen and (min-width: 768px) {
+        width: 33.333333%;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      svg {
+        width: 55px;
+
+        @media screen and (min-width: 768px) {
+          width: 35px;
+          position: relative;
+          top: -5px;
+        }
+      }
+    }
+
+    &-copyright {
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      margin-top: 7px;
+
+      @media screen and (min-width: 768px) {
+        width: 33.333333%;
+        text-align: right;
+        font-size: 1.2rem;
+        margin-top: 0;
+      }
+    }
+  }
+}

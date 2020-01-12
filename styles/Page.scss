@@ -1,0 +1,358 @@
+.Page {
+  &-intro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    animation-fill-mode: both;
+    opacity: 0;
+
+    &-title {
+      text-decoration: underline;
+      font-size: 3.5rem;
+      line-height: 5rem;
+      position: relative;
+      top: -6px;
+
+      @media screen and (min-width: 768px) {
+        font-size: 4rem;
+      }
+    }
+  }
+
+  &-header {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    color: #fff;
+    position: relative;
+    height: 100vh;
+
+    &-slider {
+      &-wrapper {
+        height: 100vh;
+        width: 100%;
+
+        &.fixed {
+          position: fixed;
+        }
+      }
+
+      position: absolute;
+      height: 100vh;
+      width: 100%;
+    }
+
+    &-slide {
+      height: 100vh;
+      width: 100%;
+
+      & > div {
+        background-size: cover;
+        background-position: center;
+      }
+
+      & p {
+        height: 100vh;
+      }
+    }
+
+    .slick-dots {
+      bottom: 75px;
+      padding-bottom: 5%;
+      left: 5%;
+      width: auto;
+      cursor: pointer;
+      z-index: 99;
+
+      @media screen and (min-width: 768px) {
+        bottom: 25px;
+        right: 25px;
+        left: auto;
+      }
+
+      li {
+        width: 35px;
+        margin: 0 2px;
+
+        &.slick-active {
+          button {
+            background-color: #0F5F6B;
+          }
+        }
+
+        button {
+          background-color: #fff;
+          width: 100%;
+          height: 2px;
+          padding: 0;
+
+          &:before {
+            content: '';
+          }
+        }
+      }
+    }
+
+    &-content {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+    }
+
+    &-text {
+      margin-left: 0;
+      margin-bottom: 75px;
+      position: absolute;
+      left: 0; bottom: 0; right: 0;
+      padding: 5% 5% 15% 5%;
+
+      @media screen and (min-width: 768px) {
+        margin-left: 50px;
+        margin-bottom: 0;
+      }
+    }
+
+    &-title {
+      font-size: 4rem;
+      line-height: 4.5rem;
+      margin: 25px 0;
+      text-decoration: underline;
+
+      @media screen and (min-width: 768px) {
+        font-size: 4.5rem;
+        line-height: 5.5rem;
+      }
+    }
+
+    &-description {
+      font-size: 1.4rem;
+
+      em {
+        font-size: 1.8rem;
+        line-height: 3rem;
+        text-decoration: underline;
+        display: block;
+      }
+
+      & > em {
+        margin-top: 10px;
+      }
+
+      br {
+        display: none;
+      }
+
+      strong {
+        font-family: 'Poppins-Bold';
+      }
+
+      sup {
+        font-family: inherit;
+      }
+
+      .blocks-gallery-grid {
+        list-style-type: none;
+        margin: 15px 0 0 0;
+        padding: 0;
+      }
+
+      .blocks-gallery-item {
+        width: 35%;
+        max-width: 200px;
+        padding-right: 10px;
+        display: inline-block;
+      }
+    }
+
+    &-number {
+      position: absolute;
+      bottom: -90px;
+      font-size: 8rem;
+      line-height: 5.5rem;
+      right: 5%;
+      text-align: right;
+
+      @media screen and (min-width: 768px) {
+        font-size: 5.5rem;
+        margin: 27px 0 0 0;
+        left: -15px;
+        bottom: auto;
+        right: auto;
+        text-align: left;
+      }
+    }
+
+    &-icon {
+      position: absolute;
+      width: 20px;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+    }
+
+    &.no-animation {
+      .Page-header-text {
+        opacity: 1;
+      }
+    }
+  }
+
+  &-image {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    background-color: #DBDDDC;
+  }
+
+  &-blockText {
+    background-color: #3D7E87;
+    padding: 20px;
+
+    &-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    &-title {
+      display: flex;
+      align-items: center;
+    }
+
+    &-icon {
+      width: 50px;
+      margin-right: 15px;
+    }
+
+    &-titleText {
+      color: #fff;
+      text-decoration: underline;
+      font-size: 4rem;
+      display: inline-block;
+    }
+
+    &-timing {
+      padding: 25px 0;
+      display: flex;
+      flex-direction: column;
+
+      @media screen and (min-width: 768px) {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    &-time {
+      font-size: 2rem;
+      color: #fff;
+    }
+  }
+
+  &-otherSections {
+    background-color: #0F5F6B;
+  }
+
+  &-otherSection {
+    width: 50%;
+    color: #fff;
+    position: relative;
+    float: left;
+
+    @media screen and (min-width: 768px) {
+      width: 33.333333%;
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .Page-otherSection-overlay {
+        opacity: 1;
+        background-color: rgba(15, 95, 107, 0.8);
+        transition: opacity 300ms;
+      }
+
+      .Page-otherSection-title {
+        text-decoration: underline;
+      }
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+
+    &-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 300ms;
+
+      svg {
+        width: 20px;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+      }
+    }
+
+    &-content {
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      padding: 10px;
+      left: 0;
+      right: 0;
+
+      @media screen and (min-width: 768px) {
+        position: absolute;
+        top: auto;
+        bottom: 20px;
+        padding: 25px;
+        transform: none;
+      }
+    }
+
+    &-subtitle {
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 1.25rem;
+      display: none;
+
+      @media screen and (min-width: 768px) {
+        display: block;
+      }
+    }
+
+    &-title {
+      font-size: 2rem;
+      line-height: 3rem;
+      text-align: center;
+
+      @media screen and (min-width: 768px) {
+        font-size: 3rem;
+        line-height: 4rem;
+        text-align: left;
+      }
+    }
+
+    &.empty-1 {
+      background-color: #578C92;
+    }
+
+    &.empty-2 {
+      background-color: #0F5F6B;
+    }
+  }
+}

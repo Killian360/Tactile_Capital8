@@ -1,0 +1,52 @@
+.Modal {
+  &.desktop {
+    display: none;
+
+    @media screen and (min-width: 768px) {
+      display: block;
+    }
+  }
+
+  &-logo {
+    width: 140px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &-content {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #0F5F6B;
+    padding-top: 30px;
+  }
+
+  &-button {
+    color: #fff;
+    margin-top: 45px;
+
+    svg {
+      margin-left: 15px;
+      width: 15px;
+      position: relative;
+      top: 2px;
+    }
+
+    &:hover {
+      background-color: #fff;
+      color: #0F5F6B;
+      border: 1px solid #0F5F6B;
+
+      svg {
+        fill: #0F5F6B !important;
+      }
+    }
+  }
+}

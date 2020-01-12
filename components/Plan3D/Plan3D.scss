@@ -1,0 +1,106 @@
+.Plan3D {
+  width: 100%;
+  background: rgb(167,196,201);
+  background: linear-gradient(180deg, rgba(167,196,201,1) 0%, rgba(167,196,201,1) 75%, rgba(241,241,241,1) 75.1%, rgba(241,241,241,1) 100%);
+
+  &-wrapper {
+    max-width: 1200px;
+    height: 600px;
+    padding: 20px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    @media screen and (min-width: 768px) {
+      flex-direction: row;
+      align-items: initial;
+    }
+  }
+
+  &-caption {
+    width: 45px;
+    position: absolute;
+    top: 80%;
+    right: 35px;
+  }
+
+  &-title {
+    color: #fff;
+    font-size: 4.5rem;
+    text-decoration: underline;
+    margin: 45px 0 0 15px;
+
+    @media screen and (min-width: 768px) {
+      margin: 45px 0 0 45px;
+    }
+  }
+
+  &-arrow {
+    width: 20px;
+    position: absolute;
+    top: 50%;
+    cursor: pointer;
+
+    &-wrapper {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 99;
+
+      &:last-child {
+        right: 0;
+      }
+    }
+
+    &-prev {
+      left: 0;
+      top: 45px;
+
+      @media screen and (min-width: 768px) {
+        top: 33%;
+      }
+    }
+
+    &-next {
+      right: 0;
+      top: 45px;
+
+      @media screen and (min-width: 768px) {
+        top: 33%;
+      }
+    }
+  }
+
+  &-images {
+    position: relative;
+    width: 90%;
+    height: 100%;
+    margin-top: 45px;
+
+    @media screen and (min-width: 768px) {
+      width: 75%;
+      margin-top: 0;
+    }
+  }
+
+  &-image {
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    margin: 0 auto;
+    max-width: 280px;
+
+    @media screen and (min-width: 768px) {
+      max-width: 500px;
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+}

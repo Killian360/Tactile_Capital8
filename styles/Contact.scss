@@ -1,0 +1,93 @@
+.Contact {
+  min-height: calc(100vh - 53px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &-title {
+    text-align: center;
+    margin: 50px 0;
+    color: #0F5F6B;
+    font-size: 4rem;
+    line-height: 4rem;
+  }
+
+  &-content {
+    width: 250px;
+
+    .wp-block-image {
+      text-align: center;
+
+      img {
+        width: 250px;
+      }
+    }
+
+    h3 {
+      color: #0F5F6B;
+      font-family: 'Poppins-Bold';
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin: 45px 0 0 0;
+
+      &:before {
+        content: '';
+        width: 30px;
+        height: 2px;
+        background-color: #999;
+        margin-bottom: 5px;
+        display: block;
+      }
+    }
+
+    .job {
+      color: #999;
+      font-size: 1.2rem;
+    }
+
+    .numbers {
+      color: #0F5F6B;
+      font-family: 'Poppins-Bold';
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+
+      a {
+        font-family: 'Poppins-Bold';
+        color: #0F5F6B;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .mail {
+      color: #0F5F6B;
+      font-size: 1.3rem;
+
+      &:before {
+        content: "";
+        background-image: url('/assets/svgs/envelop.svg');
+        display: block;
+        width: 10px;
+      }
+
+      a {
+        color: #0F5F6B;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

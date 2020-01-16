@@ -119,27 +119,18 @@ class Home extends React.Component {
           // IE 6/7/8
           window.attachEvent("onmousewheel", that.scrollHorizontally);
         }
-
-        // const html = document.querySelector('.Home');
-        // if(html) {
-        //   html.addEventListener("wheel", event => {
-        //     const delta = Math.sign(event.deltaY);
-        //     html.scrollLeft += (delta * 30);
-        //     that.updateArrowStatus();
-        //   }, { passive: true });
-        // }
       }, 100);
     }));
   }
 
   scrollHorizontally(e) {
     e = window.event || e;
-    console.log(window);
-    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-    var scrollSpeed = 60; // Janky jank <<<<<<<<<<<<<<
-    document.documentElement.scrollLeft -= (delta * scrollSpeed);
-    document.body.scrollLeft -= (delta * scrollSpeed);
-    // e.preventDefault();
+
+    const delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    const scrollSpeed = 60;
+    const html = document.querySelector('.Home');
+
+    html.scrollLeft -= (delta * scrollSpeed);
   }
 
   componentDidMount() {

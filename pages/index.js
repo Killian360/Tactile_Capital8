@@ -2,6 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import SVG from 'react-inlinesvg'
+import Player from '@vimeo/player'
 
 import labels from '../constants/labels'
 
@@ -32,17 +33,26 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    const that = this;
+
     if(localStorage.getItem('isModalOpen') === null) {
       localStorage.setItem('isModalOpen', true);
       this.setState({ isOpen: true });
+
+      const iframe = document.getElementById('video');
+      const player = new Player(iframe);
+      player.play();
     }
   }
 
   handleClick() {
     localStorage.setItem('isModalOpen', false);
-    this.setState({isOpen: false});
-    this.video.current.pause();
-    this.video.current.currentTime = 0;
+    this.setState({ isOpen: false });
+
+    const iframe = document.getElementById('video');
+    const player = new Player(iframe);
+    player.pause();
+    player.setCurrentTime(0);
   }
 
   render() {
@@ -75,8 +85,7 @@ class App extends React.Component {
              />
           </div>
           <div className="Modal-content">
-            <iframe src="https://player.vimeo.com/video/383108369" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen ref={this.video}></iframe>
-
+            <iframe id="video" src="https://player.vimeo.com/video/383108369?title=0&byline=0&portrait=0" width="640" height="360" frameBorder="0" allow="autoplay; fullscreen" allowFullScreen></iframe>
             <div onClick={this.handleClick.bind(this)}>
               <Button className="Modal-button">
                 {labels[locale].video.button}
@@ -96,8 +105,3 @@ class App extends React.Component {
 }
 
 export default App
-
-// <video loop muted controls width="auto" height="75%" ref={this.video}>
-//   <source src="https://vimeo.com/383108369" type="video/mp4" />
-//   Sorry, your browser doesn't support embedded videos.
-// </video>

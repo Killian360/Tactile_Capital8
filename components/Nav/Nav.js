@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import SVG from 'react-inlinesvg'
+import Player from '@vimeo/player'
 
 import labels from '../../constants/labels'
 
@@ -53,11 +54,19 @@ class Nav extends React.Component {
 
   handleClick() {
     this.setState({ isOpen: !this.state.isOpen });
-    this.video.current.pause();
-    this.video.current.currentTime = 0;
   }
 
   handleVideoClick() {
+    const iframe = document.getElementById('videoNav');
+    const player = new Player(iframe);
+
+    if (this.state.isModalOpen) {
+      player.pause();
+      player.setCurrentTime(0);
+    } else {
+      player.play();
+    }
+
     this.setState({ isModalOpen: !this.state.isModalOpen });
   }
 
@@ -88,7 +97,7 @@ class Nav extends React.Component {
              />
           </div>
           <div className="Modal-content">
-            <iframe src="https://player.vimeo.com/video/383108369" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen ref={this.video}></iframe>
+            <iframe id="videoNav" src="https://player.vimeo.com/video/383108369?title=0&byline=0&portrait=0" width="640" height="360" frameBorder="0" allow="autoplay; fullscreen" allowFullScreen></iframe>
           </div>
         </div>
 
@@ -176,8 +185,3 @@ class Nav extends React.Component {
 }
 
 export default Nav;
-
-// <video loop muted controls width="auto" height="75%" ref={this.video}>
-//   <source src="https://vimeo.com/383108369" type="video/mp4" />
-//   Sorry, your browser doesn't support embedded videos.
-// </video>

@@ -83,6 +83,7 @@ class Layout extends React.Component {
 
     return (
       <div className="Layout">
+        <Nav isLogoBlue={conditions.isLogoBlue} isMenuBlue={conditions.isMenuBlue} handleChangeLocale={handleChangeLocale} locale={locale} />
 
         <div className="Layout-content">
           { children }

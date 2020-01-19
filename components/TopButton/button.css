@@ -1,0 +1,56 @@
+#TopButton
+{
+  background: linear-gradient(0deg, rgba(93,20,117,1) 0%, rgba(38,59,157,1) 36%, rgba(18,88,134,1) 68%, rgba(18,88,134,1) 100%);
+  border-radius:50px;
+  width:6vh;
+  height:6vh;
+  min-width:35px;
+  min-height:35px;
+  position:fixed;
+  right:35px;
+  opacity:1;
+  bottom:-100px;
+  cursor: pointer;
+  z-index:25;
+  overflow:hidden;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-tap-highlight-color: transparent;
+background-size:1px 200px;  
+}
+
+@media screen and (max-width: 768px) {
+
+#TopButton
+{
+  background: linear-gradient(0deg, rgba(93,20,117,1) 0%, rgba(38,59,157,1) 36%, rgba(18,88,134,1) 68%, rgba(18,88,134,1) 100%);
+  border-radius:50px;
+  width:6vh;
+  height:6vh;
+  min-width:75px;
+  min-height:75px;
+  position:fixed;
+  right:25px;
+  opacity:1;
+  bottom:-140px;
+  cursor: pointer;
+  z-index:100;
+  overflow:hidden;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-tap-highlight-color: transparent;
+background-size:1px 200px;
+background-position:0% 100%;  
+}
+}
+
+#Top_arrow
+{
+  position:absolute;
+  margin:auto;
+  left:0;
+  right:0;
+  top:50%;
+  transform-origin: center;
+  transform:  translateY(-50%);
+  height:40%;
+
+}

@@ -1,11 +1,29 @@
-# CAPITAL 8
+# README #
 
-This project is create with [next.js](https://nextjs.org/docs/getting-started)
+This README would normally document whatever steps are necessary to get your application up and running.
 
-## Build & development
+### What is this repository for? ###
 
-Run `npm run build` for building and `npm run dev` for preview.
+* Quick summary
+* Version
+* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
-## Production
+### How do I get set up? ###
 
-Run `npm run start`
+* Summary of set up
+* Configuration
+* Dependencies
+* Database configuration
+* How to run tests
+* Deployment instructions
+
+### Contribution guidelines ###
+
+* Writing tests
+* Code review
+* Other guidelines
+
+### Who do I talk to? ###
+
+* Repo owner or admin
+* Other community or team contact

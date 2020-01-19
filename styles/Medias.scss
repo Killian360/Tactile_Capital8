@@ -28,12 +28,24 @@
     height: 100vh;
 
     & > div {
-      background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
+      max-height: 80%;
+      max-width: 90%;
+      min-width: 90%;
+      left:0;
+      right:0;
+      margin:auto;
+      top: 5%;
+      position: relative;
+      background-size: cover;
+      top: 10%;
 
       @media screen and (min-width: 768px) {
-        background-size: cover;
+        background-size: contain;
+        top: 5%;
+        min-height: 90%;
+        max-height: 90%;
       }
     }
 
@@ -41,7 +53,14 @@
       height: 100vh;
     }
   }
+}
 
+.Modal-galery
+{
+
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  
   .slick-arrow {
     z-index: 100;
     bottom: 40px;
@@ -61,6 +80,6 @@
   }
 
   .slick-next {
-    right: 25px;
+    right: 35px;
   }
 }

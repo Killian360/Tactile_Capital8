@@ -5,7 +5,6 @@ const withImages = require('next-images')
 const withSvgr = require("next-svgr")
 
 const nextConfig = {
-  distDir: 'build/',
   exportPathMap: () => ({
       '/': { page: '/' },
   }),

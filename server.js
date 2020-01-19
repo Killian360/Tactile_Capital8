@@ -9,13 +9,13 @@ app.prepare()
 .then(() => {
   const server = express()
 
-  server.get('/', (req, res) => {
-      return app.render(req, res, '/index');
-  });
-
   server.get(/^\/(fonts|static)\/.+$/, (req, res) => {
     return handle(req, res)
   });
+
+  server.get('/', (req, res) => {
+    return app.render(req, res, '/index');
+});
 
   server.get('/contact', (req, res) => {
       return app.render(req, res, '/contact');

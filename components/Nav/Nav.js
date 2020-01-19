@@ -2,13 +2,23 @@ import React from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import SVG from 'react-inlinesvg'
-import Player from '@vimeo/player'
+import Router from 'next/router'
 
 import labels from '../../constants/labels'
 
 import Button from '../../components/Button'
+import ReactPlayer from 'react-player'
+import TopButtonUI from "../../components/TopButton";
+import LangSelector from "./Lang_selector"
+import LangSelectorMobile from "./Lang_selector_mobile"
 
 import './Nav.scss'
+import {
+  TweenMax,
+  Power1,
+  TimelineMax,
+  Linear
+} from "gsap"
 
 let menu = null;
 
@@ -18,7 +28,8 @@ class Nav extends React.Component {
 
     this.state = {
       isOpen: false,
-      isModalOpen: false
+      isModalOpen: false,
+      isVideoModalOpen: false
     };
 
     this.video = React.createRef();
@@ -31,19 +42,21 @@ class Nav extends React.Component {
       axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/services?pagetags=14&filter[lang]=${locale}`),
       axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/espaces?pagetags=14&filter[lang]=${locale}`)
     ])
-    .then(axios.spread((neighbourhood, building, services, spaces) => {
-      this.setState({
-        menu: [
-        ...neighbourhood.data,
-        ...building.data,
-        ...services.data,
-        ...spaces.data
-      ]});
-    }));
+      .then(axios.spread((neighbourhood, building, services, spaces) => {
+        this.setState({
+          menu: [
+            ...neighbourhood.data,
+            ...building.data,
+            ...services.data,
+            ...spaces.data
+          ]
+        });
+      }));
   }
 
   componentDidMount() {
     this.fetchData(this.props.locale);
+    this.isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? true : false;
   }
 
   componentDidUpdate(prevProps) {
@@ -54,67 +67,76 @@ class Nav extends React.Component {
 
   handleClick() {
     this.setState({ isOpen: !this.state.isOpen });
+    if (this.state.isOpen === true) {
+      TweenMax.to(".Nav-footer", 0.2, { opacity: 0 });
+    } else {
+      TweenMax.set(".Menu-link", { opacity: 0, y: -25 });
+      TweenMax.set(".Menu-secondary", { opacity: 0 });
+      var tl = new TimelineMax({ repeat: 0 });
+      tl.staggerTo(".Menu-link", 0.11, { y: 25, opacity: 1 }, 0.1);
+      TweenMax.to(".Menu-secondary", 0.2, { opacity: 1, delay: 0.35 });
+      TweenMax.to(".Nav-footer", 0.2, { opacity: 1, delay: 0.35 });
+    }
+  }
+
+  closePanel() {
+    setTimeout(() => {
+      this.setState({ isOpen: false });
+      var body = document.body;
+      body.classList.remove("overflow-none");
+    }, 700)
   }
 
   handleVideoClick() {
-    const iframe = document.getElementById('videoNav');
-    const player = new Player(iframe);
 
-    if (this.state.isModalOpen) {
-      player.pause();
-      player.setCurrentTime(0);
-    } else {
-      player.play();
-    }
+    this.setState({ isVideoModalOpen: !this.state.isVideoModalOpen });
+  }
 
-    this.setState({ isModalOpen: !this.state.isModalOpen });
+  handleClickTop() {
+    window.scrollTo(0, 0);
   }
 
   render() {
-    const { isOpen, isModalOpen, menu } = this.state;
+    const { isOpen, isModalOpen, isVideoModalOpen, menu } = this.state;
     const { isLogoBlue, isMenuBlue, handleChangeLocale, locale } = this.props;
 
-    if(!menu) {
+    if (!menu) {
       return null;
     }
 
     return (
       <React.Fragment>
-        <div className={`Modal ${(isModalOpen ? 'open' : '')} Modal-video`}>
-          <div className="Modal-logo">
+        <div className="Modal-logo">
+          <div onClick={this.closePanel.bind(this)}>
             <Link href="/">
               <SVG
                 src="/assets/svgs/logo.svg"
-                style={{ fill: '#fff' }}
-                />
+                style={{ fill: `${((isLogoBlue && !isOpen) ? '#0F5F6B' : '#fff')}`, display: "block" }}
+              />
             </Link>
           </div>
-
+        </div>
+        <div className={`Modal ${(isVideoModalOpen ? 'open' : '')} Modal-video`}>
           <div className="Modal-close" onClick={this.handleVideoClick.bind(this)}>
             <SVG
               src="/assets/svgs/close.svg"
               style={{ fill: "#fff" }}
-             />
+            />
           </div>
           <div className="Modal-content">
-            <iframe id="videoNav" src="https://player.vimeo.com/video/383108369?title=0&byline=0&portrait=0" width="640" height="360" frameBorder="0" allow="autoplay; fullscreen" allowFullScreen></iframe>
+            {this.isMobile ? <ReactPlayer url='https://player.vimeo.com/video/383108369?autoplay=0&title=0&byline=0&controls=1&portrait=0?api=1'  controls={true} playing={this.state.isVideoModalOpen} height="100%" width="100%" />
+              :
+              <ReactPlayer url='https://player.vimeo.com/video/383108369?autoplay=0&title=0&byline=0&controls=1&portrait=0?api=1' controls={true} playing={this.state.isVideoModalOpen} height="100%" width="100%" />}
           </div>
         </div>
 
         <div className="Nav">
           <div className="Nav-header">
-            <div className="Nav-logo">
-              <Link href="/">
-                <SVG
-                  src="/assets/svgs/logo.svg"
-                  style={{ fill: `${((isLogoBlue && !isOpen) ? '#0F5F6B' : '#fff')}`, display: "block" }}
-                  />
-              </Link>
-            </div>
             <div className="Nav-actions">
               <div className="Nav-lang">
-                <div onClick={() => handleChangeLocale('fr')}></div>
-                <div onClick={() => handleChangeLocale('en')}></div>
+                <LangSelector handleChangeLocale={handleChangeLocale} />
+                {/* <div onClick={() => handleChangeLocale('fr')}></div>
+                <div onClick={() => handleChangeLocale('en')}></div> */}
               </div>
               <div className={`Nav-burger ${(isOpen ? 'open' : '')} ${((isMenuBlue && !isOpen) ? 'blue' : '')}`} onClick={this.handleClick.bind(this)}>
                 <span></span>
@@ -124,7 +146,7 @@ class Nav extends React.Component {
               </div>
             </div>
           </div>
-
+          <div className="Nav-lang-mobile"><LangSelectorMobile handleChangeLocale={handleChangeLocale} /></div>
           <div className={`Nav-menu Menu ${(isOpen ? 'open' : '')}`} onClick={this.handleClick.bind(this)}>
             <div className="Menu-content">
               <ul className="Menu-primary bold">
@@ -160,16 +182,16 @@ class Nav extends React.Component {
               <div className="Menu-secondary">
                 <Link href="/contact">
                   <SVG
-                    src="../../assets/svgs/envelop.svg"
+                    src="../../assets/svgs/envelop2.svg"
                     style={{ fill: "#fff", display: "block" }}
-                    />
+                  />
                 </Link>
                 <div className="Menu-separator"></div>
                 <Link href="/medias">
                   <SVG
-                    src="../../assets/svgs/camera.svg"
+                    src="../../assets/svgs/gallerie.svg"
                     style={{ fill: "#fff", display: "block" }}
-                    />
+                  />
                 </Link>
               </div>
             </div>
@@ -179,9 +201,15 @@ class Nav extends React.Component {
             </div>
           </div>
         </div>
+        <div onClick={() => this.handleClickTop.bind(this)}><TopButtonUI ID="TopBTN" /></div>
       </React.Fragment>
     )
   }
 }
 
 export default Nav;
+
+// <video loop muted controls width="auto" height="75%" ref={this.video}>
+//   <source src="https://vimeo.com/383108369" type="video/mp4" />
+//   Sorry, your browser doesn't support embedded videos.
+// </video>

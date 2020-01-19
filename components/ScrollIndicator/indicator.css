@@ -1,0 +1,160 @@
+
+@media screen and (max-width: 768px) {
+.Mouse_svg
+{
+  display:none;
+}
+}
+
+#Scroll_Indicator
+{
+    position:absolute;
+    width:2vw;
+    min-width:25px;
+    background-color: #000;
+    left:0;
+    right:0;
+    bottom:30px;
+    margin:auto;
+    background-color: transparent;
+    max-height:110px;
+    z-index:3;
+    padding:2px;
+    cursor:pointer;
+}
+
+@media screen and (max-width: 768px) {
+
+  #Scroll_Indicator
+  {
+      position:absolute;
+      width:25vw;
+      min-width:35px;
+      background-color: #000;
+      right:0%;
+      left:auto;
+      bottom:30px;
+      margin:auto;
+      background-color: transparent;
+      max-height:110px;
+      z-index:3;
+      padding:2px;
+      cursor:pointer;
+  }
+}
+
+.indicator_svg
+{
+  transform-origin: center top;
+}
+
+.indicator_svg polygon {
+  fill:#FFF;
+  stroke: none;
+  stroke-width:0;
+}
+
+.indicator_txt
+{
+  top:43px;
+  margin:auto;
+  text-align: center;
+  left:0;
+  right:0;
+  color:#89E35B;
+  overflow: visible;
+  font-size:1.2em;
+  letter-spacing: 0.1em;
+  font-family: "Brandon_regular", sans-serif;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.indicator_arrow
+{
+
+}
+
+.indicator_txt span
+{
+  text-transform: uppercase;
+}
+
+.indicator_txt p
+{
+  margin:0;
+  padding:0;
+}
+
+.indicator_arrow_svg
+{
+  margin:auto;
+  margin-top:3px;
+  min-height:20px;
+  max-width:8px;
+  left:0;
+  right:0;
+  z-index:12;
+  animation: 1.2s Scalin infinite ;
+  transform-origin: 0% 80%;
+}
+
+@media screen and (max-width: 768px) {
+
+.indicator_txt
+  {
+    top:43px;
+    margin:auto;
+    text-align: center;
+    left:0;
+    right:0;
+    color:#89E35B;
+    overflow: visible;
+    font-size:1.2em;
+    letter-spacing: 0.1em;
+    font-family: "Brandon_regular", sans-serif;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
+
+.indicator_arrow_svg
+{
+  margin:auto;
+  margin-top:3px;
+  min-height:150px;
+  max-width:400px;
+  left:0;
+  right:0;
+  z-index:12;
+  animation: 1.5s downing infinite ;
+  transform-origin: 0% 80%;
+  opacity:0; 
+}
+}
+
+@keyframes Scalin {
+  0% { transform:scaleY(1);}
+  100% { transform:scaleY(0);}
+}
+
+@keyframes downing {
+  0% { 
+    transform: translate3d(0px,-50px, 0px);
+    opacity:0;
+  }
+  50%{
+    opacity:1; 
+  }
+  100% { 
+    transform: translate3d(0px, 0px, 0px);
+    opacity:0;
+  }
+}
+
+

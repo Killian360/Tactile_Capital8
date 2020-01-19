@@ -1,48 +1,66 @@
 import React from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import axios from 'axios'
 import Slider from 'react-slick'
 import SVG from 'react-inlinesvg'
 import chunk from 'lodash.chunk'
-
+import ScrollIndicatorComponent from '../../components/ScrollIndicator'
 import Layout from '../../layouts'
+import Router from 'next/router'
 
 import Plan3D from '../../components/Plan3D'
 
 import '../../styles/Page.scss'
 
+import {
+  TweenMax,
+  Power1,
+  TimelineMax,
+  Linear
+} from "gsap"
+
 class Page extends React.Component {
+
   constructor(props) {
     super(props);
 
     this.state = {
-      blocksToCompleteLine: 0
+      blocksToCompleteLine: 0,
+      url: "undefined",
+      as: "undefined",
+      isLoading:true
     };
-  }
 
+    this.fetchData = this.fetchData.bind(this);
+    this.handleRef = this.handleRef.bind(this);
+    this.Reroute = this.Reroute.bind(this);
+  }
+  
   static async getInitialProps({ query }) {
     const { type, slug } = query;
 
-    const res = await fetch(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?slug=${slug}`);
-    const page = await res.json();
+      const res = await fetch(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?slug=${slug}`);
+      const page = await res.json();
+    //   axios({
+    //     method: 'get',
+    //     responseType: 'json',
+    //     url: `http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?slug=${slug}`,
+    // })
+    //     .then(response => {
+    //         self.setState({
+    //             items2: response ,
+    //             isLoading: false
+    //         });
+    //         console.log("Asmaa Almadhoun *** : " + self.state.items2);
+    //         return { query, page: self.state.items2[0] };
 
-    return { query, page: page[0] };
-  }
-
-  fetchData(locale) {
-    const { page, query: { type } } = this.props;
-    const that = this;
-
-    axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?exclude=${page.id}&filter[lang]=${locale}`)
-      .then((function (pages) {
-        that.setState({
-          pages: pages.data,
-          blocksToCompleteLine: chunk([1, 2], pages.data.length % 3)
-        });
-      }));
-  }
+    //     })
+    //     .catch(error => {
+    //         console.log("Error *** : " + error);
+    //     });
+        return { query, page: page[0]};
+}
 
   calculateBlockToCompleteLine() {
     if(window.innerWidth < 768) {
@@ -52,21 +70,119 @@ class Page extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const that = this;
+componentDidMount(){
 
+     // prevent state error on unmounted component
+    this._isMounted = true;
+   
     this.fetchData(this.props.locale);
 
-    window.addEventListener('resize', function() {
-      that.calculateBlockToCompleteLine();
-    });
+    //Anim
+    TweenMax.set(".Page-header-description",{opacity:0,y:-25});
+      TweenMax.set(".Page-header .Page-header-title span",{opacity:0, bottom:-100});
+      TweenMax.to(".Page-header .Page-header-title span",{opacity:1, bottom:0, delay:0.35});
+      TweenMax.to(".Page-header-description",0.15,{opacity:1,y:0, delay:0.45});
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.query.slug !== prevProps.query.slug || this.props.locale !== prevProps.locale) {
+  fetchData(locale) {
+    const { page, query: { type, slug } } = this.props;
+    const that = this;
+    var indexID = [];
+
+    //Index of each categories to exclude
+
+    indexID = 
+    (this.props.query.type == "quartier") ? [93,181] : 
+    (this.props.query.type == "immeuble") ? [206,348] : 
+    (this.props.query.type == "services") ? [243,369] : 
+    (this.props.query.type == "espaces") ? [245,396] : 
+    [0,0];
+
+      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?exclude=${page.id},${indexID[0]},${indexID[1]}&filter[lang]=${locale}`)
+      .then((function (pages) {    
+        if (that._isMounted) {
+          that.setState({
+          pages: pages.data,
+        });
+      }
+      }));
+    }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (this.props.query.slug !== prevProps.query.slug) { 
+  
       this.fetchData(this.props.locale);
+     
+      TweenMax.set(".Page-header-description",{opacity:0,y:-25});
+      TweenMax.set(".Page-header .Page-header-title span",{opacity:0, bottom:-100});
+      TweenMax.to(".Page-header .Page-header-title span",{opacity:1, bottom:0, delay:0.35});
+      TweenMax.to(".Page-header-description",0.15,{opacity:1,y:0, delay:0.45});
     }
   }
+
+  clickToScroll()
+  {
+    var body = document.body;  
+    var header = document.getElementById("Page-header");
+    var pos = header.clientHeight;
+      var pos = header.clientHeight;
+
+    window.scrollTo({
+      top: pos,
+      behavior: 'smooth',
+  });
+}
+
+handleRef(url, as)
+{
+var lastScrollY = window.scrollY;
+if (lastScrollY <= 0 && url !== "undefined")
+{
+}
+}
+
+goToTop(url, as)
+{
+//   window.scrollTo({
+//     top: 0,
+//     behavior: 'smooth',
+// });
+var transitionWrapper = document.getElementById('transitionWrapper');
+
+TweenMax.set(transitionWrapper,{css:{bottom:"-100vh"}});
+TweenMax.to(transitionWrapper,0.25,{bottom:0, onComplete:this.Reroute(url, as)});
+}
+
+Reroute(url, as)
+{
+setTimeout(() => {
+  window.scrollTo({
+    top: 0,
+});
+var transitionWrapper = document.getElementById('transitionWrapper');
+    Router.push(url, as, { shallow: false });
+    TweenMax.to(transitionWrapper,0.25,{bottom:"100vh", delay:0.2});
+}, 250)
+}
+
+// handleScrollCallBack(url, as)
+// {
+//   var lastScrollY = window.scrollY;
+//   console.log(scrollY);
+//   if (lastScrollY <= 0)
+//   {
+//     Router.push(url, as, { shallow: false });
+//     window.removeEventListener('scroll', this.handleScrollCallBack(url, as), true);
+//   }
+// }
+
+componentWillUnmount()
+{
+  // component is unmounted*
+  // prevent state error on unmounted component
+  this._isMounted = false;
+}
 
   render() {
     const { blocksToCompleteLine, pages } = this.state;
@@ -86,8 +202,9 @@ class Page extends React.Component {
       <React.Fragment>
         <div id="trigger" />
         <div className="Page">
-          <div className="Page-header">
+          <div className="Page-header" id="Page-header" >
             <div className="Page-header-slider-wrapper">
+            <div className="darkEdge"></div>
               <Slider {...settings} className="Page-header-slider">
                 {page.acf.slider.map((image, index) => (
                   <div key={index} className="Page-header-slide">
@@ -100,21 +217,13 @@ class Page extends React.Component {
             </div>
 
             <div className="Page-header-content">
-              <div className="Page-intro fadeout">
-                <h2 className="Page-intro-title bold">{page.title.rendered}</h2>
-              </div>
-
-              <div className="Page-header-text fadein">
-                <h2 className="Page-header-title bold">{page.title.rendered}</h2>
+              <ScrollIndicatorComponent click={this.clickToScroll.bind(this)}/>
+              <div className="Page-header-text fadeinDown">
+                <h2 className="Page-header-title bold">
+                  <span>{page.title.rendered}</span></h2>
                 <div className="Page-header-description" dangerouslySetInnerHTML={{__html: page.content.rendered}}></div>
               </div>
             </div>
-
-            <SVG
-              src="/assets/svgs/mouse.svg"
-              className="Page-header-icon"
-              style={{ fill: "#fff" }}
-             />
           </div>
 
           {page.acf['block_image'] &&
@@ -131,6 +240,7 @@ class Page extends React.Component {
             <React.Fragment>
               {page.acf['block_image_text'].map((item, key) => (
                 <div className="Page-header no-animation" key={key}>
+                              <div className="darkEdge"></div>
                   <Slider {...settings} className="Page-header-slider">
                     {item.slider.map((image, index) => (
                       <div key={index} className="Page-header-slide">
@@ -148,7 +258,9 @@ class Page extends React.Component {
                           <p className="Page-header-number thin">{("0" + (key+1)).slice(-2)}</p>
                         </div>
                       }
-                      <h2 className="Page-header-title bold">{item.title}</h2>
+                      <h2 className="Page-header-title bold">
+                       <span>{item.title}</span>
+                        </h2>
                       <div className="Page-header-description" dangerouslySetInnerHTML={{__html: item.description}}></div>
                     </div>
                   </div>
@@ -182,8 +294,8 @@ class Page extends React.Component {
               {pages.map((page, index) => (
                 <React.Fragment key={index}>
                   {page.acf.slider[0].image &&
-                    <Link href="/[type]/[slug]" as={`/${page.type}/${page.slug}`}>
-                      <div className="Page-otherSection" style={{backgroundImage: "url(" + page.acf.slider[0].image.url + ")", backgroundSize: "cover"}}>
+                    // <Link href="/[type]/[slug]" as={`/${page.type}/${page.slug}`}>
+                      <div onClick={this.goToTop.bind(this, '/[type]/[slug]', `/${page.type}/${page.slug}`)}  className="Page-otherSection">
                         <div className="Page-otherSection-overlay">
                           <SVG
                             src="/assets/svgs/arrow-next.svg"
@@ -194,14 +306,21 @@ class Page extends React.Component {
                           <p className="Page-otherSection-subtitle">{page.acf.subtitle}</p>
                           <h2 className="Page-otherSection-title bold">{page.title.rendered}</h2>
                         </div>
+                        <div className="Page-otherSection-background" style={{backgroundImage: "url(" + page.acf.slider[0].image.url + ")", backgroundSize: "cover"}}></div>
                       </div>
-                    </Link>
+                    // </Link>
                   }
                 </React.Fragment>
               ))}
-              {blocksToCompleteLine.map((page, index) => (
+              {/* {blocksToCompleteLine.map((page, index) => (
                 <div className={`Page-otherSection empty-${index+1}`} key={pages.length + index}></div>
-              ))}
+              ))} */}
+               <div id="transitionWrapper">
+               <SVG
+                            src="/assets/svgs/logo-transition.svg"
+                            style={{ fill: "#fff" }}
+                           />  
+               </div>
               <div className="clear"></div>
             </div>
           }

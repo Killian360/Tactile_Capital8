@@ -4,6 +4,7 @@ import axios from 'axios'
 import SVG from 'react-inlinesvg'
 
 import Button from '../components/Button'
+import labels from '../constants/labels'
 
 import '../styles/Posts.scss'
 
@@ -51,11 +52,13 @@ class Posts extends React.Component {
                 <div className="Posts-item-content">
                   <h2 className="Posts-item-title bold">{post.title.rendered}</h2>
                   <Button className="Posts-item-button">
-                    Voir l'article
+                  <span>
+                    {labels[this.props.locale].news.button}
                     <SVG
                       src="/assets/svgs/arrow-next.svg"
                       style={{ fill: "#fff" }}
                      />
+                    </span>
                   </Button>
                 </div>
               </div>

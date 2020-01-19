@@ -1,3 +1,35 @@
+#transitionWrapper
+{
+  height:100%;
+  width:100%;
+  position:fixed;
+  z-index:999;
+  background: #FFF;
+  bottom: -100vh;
+  clip: rect(0, auto, auto, 0);
+  clip-path: rect(0, auto, auto, 0);
+}
+
+#Page-header
+{
+  height:100vh !important;
+}
+
+#transitionWrapper svg
+{
+  position:fixed;
+  margin:auto;
+  width:20%;
+  left:0;
+  right:0;
+  top:50%;
+  min-width:250px;
+  overflow:hidden;
+  fill:#0F5F6B !important;
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+
 .Page {
   &-intro {
     display: flex;
@@ -22,7 +54,6 @@
   }
 
   &-header {
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -31,10 +62,14 @@
     position: relative;
     height: 100vh;
 
+    @media screen and (max-width: 768px) {
+      height: calc(100vh - 80px);
+    }
+
     &-slider {
       &-wrapper {
         height: 100vh;
-        width: 100%;
+        width: 100vw;
 
         &.fixed {
           position: fixed;
@@ -42,8 +77,14 @@
       }
 
       position: absolute;
-      height: 100vh;
-      width: 100%;
+      height: 100%;
+      width: 100vw;
+
+      @media screen and (max-width: 768px) {
+
+      position: absolute;
+      width: 100vw;
+      }
     }
 
     &-slide {
@@ -61,26 +102,32 @@
     }
 
     .slick-dots {
-      bottom: 75px;
-      padding-bottom: 5%;
-      left: 5%;
+      bottom: calc(5% + 75px);
       width: auto;
       cursor: pointer;
       z-index: 99;
+      right: 5%;
+      padding:10px;
 
-      @media screen and (min-width: 768px) {
-        bottom: 25px;
-        right: 25px;
-        left: auto;
+      @media screen and (max-width: 768px) {
+        padding:0;
+        bottom: 0px;
+        left: 5%;
+        right:auto;
       }
 
       li {
         width: 35px;
         margin: 0 2px;
+        height:auto !important;
 
         &.slick-active {
           button {
             background-color: #0F5F6B;
+            height: 2px;
+            padding: 6px;
+            padding-top: 15px;
+            transition: all 0.2s;
           }
         }
 
@@ -88,7 +135,8 @@
           background-color: #fff;
           width: 100%;
           height: 2px;
-          padding: 0;
+          padding: 5px;
+          transition: all 0.2s;
 
           &:before {
             content: '';
@@ -99,42 +147,88 @@
 
     &-content {
       width: 100%;
-      max-width: 1200px;
+      max-width: 90%;
       margin: 0 auto;
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       display: flex;
+      z-index:4;
     }
 
     &-text {
       margin-left: 0;
-      margin-bottom: 75px;
-      position: absolute;
+      margin-bottom: 0;
       left: 0; bottom: 0; right: 0;
-      padding: 5% 5% 15% 5%;
+      padding: 5% 5% 25% 5%;
+      max-height:90vh;
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none;
+      touch-action: none;
+      pointer-events: none;
+      position:absolute;
 
       @media screen and (min-width: 768px) {
         margin-left: 50px;
         margin-bottom: 0;
+        padding: 5% 5% 12% 5%;
       }
+
     }
 
     &-title {
-      font-size: 4rem;
+      font-size: 3.2rem;
       line-height: 4.5rem;
       margin: 25px 0;
       text-decoration: underline;
-
       @media screen and (min-width: 768px) {
-        font-size: 4.5rem;
+        font-size: 6rem;
         line-height: 5.5rem;
+        letter-spacing: 1px;
+        overflow: hidden;
+        padding-bottom: 10px;
       }
     }
 
+    .Page-header-title span
+    {
+      position:relative;
+      font-family: 'Poppins';
+      font-weight: 700;
+      bottom: 100px;
+      opacity:0;
+      
+    }
+
+    // .Page-header-title span::after 
+    // {
+    //   content: "";
+    //   background: #fff;
+    //   width: 100%;
+    //   height: 2px;
+    //   display: inline-block;
+    //   position: absolute;
+    //   left: 0;
+    //   bottom: 10px;
+    //   transition: all 0.15s ease-in-out 0s;
+    //   transform: scaleX(1);
+    // }
+
     &-description {
-      font-size: 1.4rem;
+      font-size: 2rem;
+      letter-spacing: 1px;
+
+      max-width:70%;
+      text-align: left;
+
+      @media screen and (max-width: 768px) {
+        font-size: 1.9rem;
+      }
 
       em {
         font-size: 1.8rem;
@@ -182,7 +276,7 @@
       text-align: right;
 
       @media screen and (min-width: 768px) {
-        font-size: 5.5rem;
+        font-size: 7rem;
         margin: 27px 0 0 0;
         left: -15px;
         bottom: auto;
@@ -260,36 +354,74 @@
 
   &-otherSections {
     background-color: #0F5F6B;
+    display:flex;
+    flex-wrap: wrap;
   }
 
   &-otherSection {
-    width: 50%;
+    width: 100%;
     color: #fff;
     position: relative;
     float: left;
-
+    overflow:hidden;
+    max-height: 15vh;
+    
+    
     @media screen and (min-width: 768px) {
       width: 33.333333%;
-    }
+      flex: 1 0 33.333%;
+      max-height:640px;
 
     &:hover {
       cursor: pointer;
 
       .Page-otherSection-overlay {
-        opacity: 1;
-        background-color: rgba(15, 95, 107, 0.8);
-        transition: opacity 300ms;
+        opacity: 0.7;
+        background: linear-gradient(325deg, #020024 0%, #096279 35%, #1bc1a3 100%);
+        transition: opacity 300ms ease-in-out;
       }
 
-      .Page-otherSection-title {
-        text-decoration: underline;
+      .Page-otherSection-background {
+        transform:scale(1.1);
+        transition:all 0.45s ease-in-out;
       }
+
+      .Page-otherSection-subtitle
+      {
+        top:0;
+        opacity:1;
+        transition: all 0.35s ease-in-out;
+      }
+
+      .Page-otherSection-title::after 
+      {
+        content: "";
+        background: #fff;
+        width: 100%;
+        height: 2px;
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        bottom: 3px;
+        transition: all 0.15s ease-in-out 0s;
+        transform: scaleX(1);
+      }
+
     }
-
+  }
     &:after {
       content: "";
       display: block;
       padding-bottom: 100%;
+    }
+
+    &-background {
+      width:100%;
+      height:100%;
+      position:absolute;
+      z-index:1;
+      transition:all 0.25s ease-in-out;
+      transform: scale(1);
     }
 
     &-overlay {
@@ -297,53 +429,71 @@
       width: 100%;
       height: 100%;
       opacity: 0;
-      transition: opacity 300ms;
+      transition: opacity 300ms ease-in-out;
+      background: linear-gradient(325deg, #020024 0%, #096279 35%, #1bc1a3 100%);
+      z-index:2;
 
       svg {
         width: 20px;
         position: absolute;
         top: 15px;
         right: 20px;
+        height:40px;
       }
     }
 
     &-content {
       position: absolute;
-      top: 50%;
+      top: 40%;
       transform: translate(0, -50%);
       padding: 10px;
+      padding-left: 30px;
       left: 0;
       right: 0;
+      z-index:3;
 
       @media screen and (min-width: 768px) {
         position: absolute;
         top: auto;
-        bottom: 20px;
-        padding: 25px;
+        bottom: 10%;
+        padding: 50px;
+        
         transform: none;
+        z-index:3;
       }
     }
 
     &-subtitle {
       text-transform: uppercase;
       letter-spacing: 4px;
-      font-size: 1.25rem;
-      display: none;
+      font-size: 1rem;
+      display: block;
+      top: 0px;
+      position: relative;
+      opacity:1; 
 
       @media screen and (min-width: 768px) {
-        display: block;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-size: 1.25rem;
+        top: -30px;
+        position: relative;
+        opacity:0;    
+        transition: all 0.25s;
       }
     }
 
     &-title {
       font-size: 2rem;
       line-height: 3rem;
-      text-align: center;
-
+      text-align: left;
+      position:absolute;
+       
       @media screen and (min-width: 768px) {
         font-size: 3rem;
         line-height: 4rem;
         text-align: left;
+        position:absolute;
       }
     }
 
@@ -355,4 +505,44 @@
       background-color: #0F5F6B;
     }
   }
+}
+      
+.Page-otherSection-title::after {
+  content: "";
+  background: #fff;
+  width: 100%;
+  height: 3px;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+  transform: scaleX(0);
+}
+
+@media screen and (max-width: 768px) {
+
+  .Page-otherSection-overlay {
+    opacity: 1;
+    background: linear-gradient(325deg, #02002478 0%, #09627959 35%, #1bc1a359 100%);
+    transition: opacity 300ms ease-in-out;
+  }
+
+  .Page-otherSection-overlay svg{
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+   .Page-otherSection-background {
+      transform:scale(1.1);
+      transition:all 0.45s ease-in-out;
+    }
+}
+
+.darkEdge
+{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background: linear-gradient(15deg, rgba(0, 43, 36, 0.78) 0%, rgba(0, 0, 0, 0)45%);
+  z-index:3;
 }

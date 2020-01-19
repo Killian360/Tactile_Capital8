@@ -48,62 +48,71 @@ class Medias extends React.Component {
   }
 
   handleClick(index) {
-    if(index >= 0) {
-      this.slider.slickGoTo(index);
-      const that = this;
-      setTimeout(function(){
-        that.setState({ isOpen: !that.state.isOpen });
-      }, 350);
-    } else {
-      this.setState({ isOpen: !this.state.isOpen });
+
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+      // if any scroll is attempted, set this to the previous value 
+      window.onscroll = function () {window.scrollTo(scrollLeft, scrollTop)};
+
+        if (index >= 0) {
+          this.slider.slickGoTo(index, true);
+          const that = this;
+          setTimeout(function () {
+            that.setState({ isOpen: !that.state.isOpen });
+          }, 350);
+
+        } else {
+          window.onscroll = function() {}; 
+          this.setState({ isOpen: !this.state.isOpen });
+        }
+    }
+
+    render() {
+      const { isOpen } = this.state;
+      const { medias } = this.props;
+
+      const settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />
+      };
+
+      return (
+        <React.Fragment>
+          <div className="Medias">
+            {medias.map((media, index) => (
+              <div key={index} className="Medias-item" style={{ backgroundImage: "url(" + media.source_url + ")" }} onClick={this.handleClick.bind(this, index)}>
+                <div className="Medias-item-overlay"></div>
+              </div>
+            ))}
+            <div className="clear"></div>
+          </div>
+
+          <div className={`Modal-galery ${(isOpen ? 'open' : '')}`}>
+            <div className="Modal-close" onClick={this.handleClick.bind(this)}>
+              <SVG
+                src="/assets/svgs/close.svg"
+                style={{ fill: "#fff" }}
+              />
+            </div>
+            <Slider {...settings} ref={slider => (this.slider = slider)}>
+              {medias.map((media, index) => (
+                <div key={index} className="Modal-slide">
+                  <div style={{ backgroundImage: "url(" + media.source_url + ")" }}>
+                    <p>&nbsp;</p>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        </React.Fragment>
+      )
     }
   }
 
-  render() {
-    const { isOpen } = this.state;
-    const { medias } = this.props;
-
-    const settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      nextArrow: <NextArrow />,
-      prevArrow: <PrevArrow />
-    };
-
-    return (
-      <React.Fragment>
-        <div className="Medias">
-          {medias.map((media, index) => (
-            <div key={index} className="Medias-item" style={{backgroundImage: "url(" + media.source_url + ")"}} onClick={this.handleClick.bind(this, index)}>
-              <div className="Medias-item-overlay"></div>
-            </div>
-          ))}
-          <div className="clear"></div>
-        </div>
-
-        <div className={`Modal ${(isOpen ? 'open' : '')}`}>
-          <div className="Modal-close" onClick={this.handleClick.bind(this)}>
-          <SVG
-            src="/assets/svgs/close.svg"
-            style={{ fill: "#fff" }}
-           />
-          </div>
-          <Slider {...settings} ref={slider => (this.slider = slider)}>
-            {medias.map((media, index) => (
-              <div key={index} className="Modal-slide">
-                <div style={{backgroundImage: "url(" + media.source_url + ")"}}>
-                  <p>&nbsp;</p>
-                </div>
-              </div>
-            ))}
-          </Slider>
-        </div>
-      </React.Fragment>
-    )
-  }
-}
-
-export default Medias
+  export default Medias

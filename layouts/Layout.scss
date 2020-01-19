@@ -1,3 +1,9 @@
+
+// .Layout-content
+// {
+//   overflow:auto;
+// }
+
 .Layout {
   height: 100%;
 
@@ -7,31 +13,41 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px 20px 5px 20px;
+    padding: 15px;
     position: relative;
 
     @media screen and (min-width: 768px) {
       flex-direction: row;
-      align-items: center;
     }
 
     &-back {
-      display: flex;
+      // display: none;
       font-size: 1.2rem;
       align-items: center;
       text-align: left;
       width: 33.333333%;
+      // @media screen and (min-width: 768px) {
+        display: flex;
+      // }
 
       &-news {
-        position: absolute;
-        top: -60px;
-        color: #0F5F6B;
-        width: 100%;
-        left: 15px;
-        right: 0;
+        display: none;
+   
+        @media screen and (min-width: 768px) {
+
+        display: inline-flex;
+          vertical-align: middle;
+          margin-bottom: 0;
+          line-height: 40px;
+        }
 
         & svg {
           fill: #0F5F6B !important;
+        }
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
         }
 
         @media screen and (min-width: 768px) {
@@ -48,21 +64,22 @@
         display: none;
 
         @media screen and (min-width: 768px) {
-          display: inline-block;
+          display: inline-flex;
+          vertical-align: middle;
+          margin-bottom: 0;
+          line-height: 40px;
         }
-      }
-
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
       }
 
       svg {
         width: 15px;
         margin-right: 7px;
         position: relative;
-        bottom: -3px;
-        height: 15px;
+        bottom: 0px;
       }
     }
 
@@ -82,9 +99,10 @@
         width: 55px;
 
         @media screen and (min-width: 768px) {
-          width: 35px;
+          width: 45px;
           position: relative;
-          top: -5px;
+          top: 50%;
+    transform: translateY(-50%);
         }
       }
     }
@@ -100,6 +118,19 @@
         text-align: right;
         font-size: 1.2rem;
         margin-top: 0;
+      }
+    }
+
+    &-copyright p {
+
+      position:relative;
+      top:50%;
+      margin-bottom:0;
+      
+      @media screen and (min-width: 768px) {
+      position:relative;
+      transform:translateY(-50%);
+      top:50%;
       }
     }
   }

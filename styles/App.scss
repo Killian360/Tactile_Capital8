@@ -1,22 +1,63 @@
-.Modal {
-  &.desktop {
-    display: none;
+select option {
+  margin: 40px !important;
+  background: #0F5F6B !important;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4) !important;
+  padding-top:15px !important;
+}
 
-    @media screen and (min-width: 768px) {
-      display: block;
-    }
+select
+{
+  border: 0 !important;
+}
+
+.overflow-none
+{
+}
+
+@media screen and (max-width: 768px) {
+  .player-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 720 / 1280 = 0.5625 */
   }
+  
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+b, strong
+{
+  font-family:'Poppins' !important;
+}
+
+.Modal {
 
   &-logo {
-    width: 140px;
-    position: absolute;
+
+    width: 110px;  
     top: 20px;
-    left: 20px;
+    left: 0;
+    right:0;
+    margin:auto;
+    z-index:10001;
+    position:fixed;
+
+    @media screen and (min-width: 768px) {
+      top: 50px;
+      left: 40px;
+      margin:0;  
+      width: 140px;  
+    }
 
     &:hover {
       cursor: pointer;
     }
   }
+
+
 
   &-content {
     height: 100vh;
@@ -25,7 +66,34 @@
     justify-content: center;
     flex-direction: column;
     background-color: #0F5F6B;
-    padding-top: 30px;
+    padding-top: 0px;
+  }
+
+  &-button-video {
+    color: #fff;
+    min-width:300px;
+    min-height:80px;
+    position:absolute;
+    justify-content: center;
+    bottom:50px;
+    opacity:0.6;
+    transition:all 0.35s;
+
+    svg {
+      margin-left: 15px;
+      width: 25px;
+      top: 50%;
+      right: 0;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      // background-color: #fff;
+      // color: #0F5F6B;
+      border: 1px solid #0F5F6B;
+      opacity:1;
+      transition:all 0.35s;
+    }
   }
 
   &-button {
@@ -37,7 +105,6 @@
       width: 15px;
       position: relative;
       top: 2px;
-      height: 15px;
     }
 
     &:hover {
@@ -50,4 +117,15 @@
       }
     }
   }
+}
+
+.Button-label
+{
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  letter-spacing: 3px;
+  line-height: 55px;
 }

@@ -5,6 +5,14 @@ import findIndex from 'lodash.findindex'
 import SVG from 'react-inlinesvg'
 
 import '../../styles/Post.scss'
+import labels from '../../constants/labels'
+
+import {
+  TweenMax,
+  Power1,
+  TimelineMax,
+  Linear
+} from "gsap"
 
 class Post extends React.Component {
   constructor(props) {
@@ -32,6 +40,13 @@ class Post extends React.Component {
           posts: posts.data,
           post: post.data[0]
         });
+        TweenMax.to(".Post-content-subtitle",0.15,{opacity:1,y:0});
+        TweenMax.to(".Post-content-title",0.15,{opacity:1,y:0, delay:0.15});
+        TweenMax.to(".Post-content-text",0.15,{opacity:1,y:0, delay:0.25});
+        TweenMax.to(".mediacontent",0.15,{opacity:1,y:0, delay:0.15});
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+          TweenMax.set(".Post-content-arrows",{css:{bottom:"0px"}});
+          }
       }));
   }
 
@@ -42,11 +57,16 @@ class Post extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.query.slug !== prevProps.query.slug || this.props.locale !== prevProps.locale) {
       this.fetchData(this.props.locale);
+      TweenMax.set(".Post-content-subtitle",{opacity:0,y:-25});
+      TweenMax.set(".Post-content-title",{opacity:0,y:-25});
+      TweenMax.set(".Post-content-text",{opacity:0,y:-25});
+      TweenMax.to(".mediacontent",0.15,{opacity:0});
     }
   }
 
   render() {
     const { post, posts } = this.state;
+    const { locale } = this.props;
 
     if(!posts && !post) {
       return null;
@@ -60,17 +80,20 @@ class Post extends React.Component {
       <React.Fragment>
         <div className="Post">
           <div className="Post-wrapper">
-            <div className="Post-content">
-              <p className="Post-content-subtitle">{post.acf.subtitle}</p>
-              <h3 className="Post-content-title">{post.title.rendered}</h3>
-              <div className="Post-content-text" dangerouslySetInnerHTML={{__html: post.content.rendered}}></div>
-
-              <div className="Post-content-arrows">
+          <div className="Post-content-arrows">
                 <Link href="/news/[slug]" as={`/news/${posts[prevIndex].slug}`}>
                   <SVG
                     src="../../assets/svgs/arrow-prev.svg"
                     className="Post-content-arrows-left"
                     style={{ fill: "#999" }} />
+                </Link>
+                <Link href="/news">
+               <div className="allNews">
+               <SVG
+                      src="/assets/svgs/grid.svg"
+                      style={{ fill: "#0F5F6B" }}
+                     />
+                 {labels[locale].footer.back.news}</div>
                 </Link>
                 <Link href="/news/[slug]" as={`/news/${posts[nextIndex].slug}`}>
                   <SVG
@@ -79,14 +102,20 @@ class Post extends React.Component {
                     style={{ fill: "#999" }} />
                 </Link>
               </div>
+            <div className="Post-content">
+              <p className="Post-content-subtitle">{post.acf.subtitle}</p>
+              <h3 className="Post-content-title">{post.title.rendered}</h3>
+              <div className="Post-content-text" dangerouslySetInnerHTML={{__html: post.content.rendered}}></div>
             </div>
           </div>
-          <div className="Post-media">
+          <div className="Post-media Wrapper">
+          <div className="Post-media mediacontent">
             {post.acf.video ? (
               <div className="Post-media-video" dangerouslySetInnerHTML={{__html: post.acf.video}}></div>
             ) : (
               <div className="Post-media-image" style={{backgroundImage: "url(" + post.acf.image.url + ")"}}></div>
             )}
+          </div>
           </div>
         </div>
       </React.Fragment>

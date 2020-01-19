@@ -1,5 +1,6 @@
 const labels = {
   "en": {
+    "langLabel":"Language",
     "video": {
       "button": "Skip video"
     },
@@ -31,6 +32,7 @@ const labels = {
     }
   },
   "fr": {
+    "langLabel":"Langue",
     "video": {
       "button": "Passer l'intro"
     },

@@ -36,10 +36,14 @@ class Post extends React.Component {
       axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?slug=${slug}`)
     ])
       .then(axios.spread(function(posts, post) {
+        if (that._isMounted) {
         that.setState({
           posts: posts.data,
           post: post.data[0]
-        });
+        })
+        console.log(post);
+
+        ;}
         TweenMax.to(".Post-content-subtitle",0.15,{opacity:1,y:0});
         TweenMax.to(".Post-content-title",0.15,{opacity:1,y:0, delay:0.15});
         TweenMax.to(".Post-content-text",0.15,{opacity:1,y:0, delay:0.25});
@@ -52,6 +56,7 @@ class Post extends React.Component {
 
   componentDidMount() {
     this.fetchData(this.props.locale);
+    this._isMounted = true;
   }
 
   componentDidUpdate(prevProps) {
@@ -62,6 +67,11 @@ class Post extends React.Component {
       TweenMax.set(".Post-content-text",{opacity:0,y:-25});
       TweenMax.to(".mediacontent",0.15,{opacity:0});
     }
+  }
+
+  componentWillUnmount()
+  {
+    this._isMounted = false;
   }
 
   render() {

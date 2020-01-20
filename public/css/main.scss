@@ -7,8 +7,26 @@ html { height: 100%; margin: 0;
   scrollbar-width: none;
 } ;
 
+@media screen and (max-width: 1400px) {
+  html {
+    font-size: 10.5px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  html {
+    font-size: 10px;
+  }
+}
+
 
 @media screen and (max-width: 400px) {
+  html {
+    font-size: 10.5px;
+  }
+}
+
+@media screen and (max-width: 370px) {
   html {
     font-size: 9px;
   }

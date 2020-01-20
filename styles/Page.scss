@@ -10,6 +10,55 @@
   clip-path: rect(0, auto, auto, 0);
 }
 
+.blueprintWrapper
+{
+  width:100vw;
+  background-color: #a7b1b1;
+  padding:10vh;
+  padding-left:10vw;
+  padding-right:10vw;
+}
+
+.blueprint
+{
+  top:10%;
+  height:100%;
+  margin:auto;
+  position:relative;
+}
+
+@media screen and (max-width: 768px) {
+  .blueprint
+{
+  width:100%;
+}
+
+.blueprintWrapper
+{
+  width:100vw;
+  padding:0;
+  min-height:0;
+
+}
+}
+
+@media screen and (min-width: 1600px) {
+.blueprintWrapper
+{
+  width:100vw;
+  background-color: #a7b1b1;
+  padding:15vh;
+  padding-left:15vw;
+  padding-right:15vw;
+}
+}
+
+.blueprint img
+{
+
+}
+
+
 #Page-header
 {
   height:100vh !important;
@@ -106,37 +155,61 @@
       width: auto;
       cursor: pointer;
       z-index: 99;
-      right: 5%;
+      right: 8%;
       padding:10px;
 
       @media screen and (max-width: 768px) {
         padding:0;
-        bottom: 0px;
+        bottom:25px;
         left: 5%;
         right:auto;
       }
 
+      .slider_svg
+      {
+        position:absolute;
+        width:100%;
+        height:100%;
+        left:0;
+        top:0;
+      }
+
       li {
-        width: 35px;
-        margin: 0 2px;
-        height:auto !important;
+        width: 1.7vw;
+        height:1.7vw;
+        margin: 0;
+        min-height:30px;
+        min-width:30px;
+        margin-left:10px;
+        
 
         &.slick-active {
           button {
-            background-color: #0F5F6B;
-            height: 2px;
             padding: 6px;
-            padding-top: 15px;
-            transition: all 0.2s;
+            fill: #0F5F6B;
+            transition: all 0.3s ease;
+            transform: scale(1);
+            background: rgb(15,95,107);
+            background: linear-gradient(180deg, rgba(7,138,148,1) 13%, rgba(13,71,135,1) 69%, rgba(1,30,125,1) 100%);
+            border-top: 2px solid #00b4d0;
+            border-bottom: 2px solid #078a94;
           }
         }
 
         button {
-          background-color: #fff;
+          background-color:#FFF;
           width: 100%;
-          height: 2px;
-          padding: 5px;
+          height: 100%;
+          transform: scale(0.7);
           transition: all 0.2s;
+          fill: #FFF;
+          // background: url("/assets/svgs/slider_dots.svg");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          position:absolute;
+          z-index:5;
+          border-radius: 50% 50% 50% 50%;
 
           &:before {
             content: '';
@@ -186,6 +259,7 @@
       line-height: 4.5rem;
       margin: 25px 0;
       text-decoration: underline;
+
       @media screen and (min-width: 768px) {
         font-size: 6rem;
         line-height: 5.5rem;
@@ -195,7 +269,7 @@
       }
     }
 
-    .Page-header-title span
+    span
     {
       position:relative;
       font-family: 'Poppins';
@@ -269,7 +343,7 @@
 
     &-number {
       position: absolute;
-      bottom: -90px;
+      bottom: 5%;
       font-size: 8rem;
       line-height: 5.5rem;
       right: 5%;
@@ -456,8 +530,8 @@
         position: absolute;
         top: auto;
         bottom: 10%;
-        padding: 50px;
-        
+        padding: 4vw;
+        padding-left:4vw;    
         transform: none;
         z-index:3;
       }
@@ -545,4 +619,12 @@
   height:100%;
   background: linear-gradient(15deg, rgba(0, 43, 36, 0.78) 0%, rgba(0, 0, 0, 0)45%);
   z-index:3;
+  animation-delay: 250ms;
+  animation : 0.5s fadein; 
+  opacity:0;
+  animation-fill-mode: forwards;
+  touch-action: none;
+  pointer-events: none;
 }
+
+

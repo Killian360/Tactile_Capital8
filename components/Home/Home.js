@@ -117,10 +117,10 @@ class Home extends React.Component {
 
     // Animate slider & title
     var slideTitle = document.getElementsByClassName('Slide-content-title bold');
-    TweenMax.set(SliderWrapper, { x: -positionLeft });
+    this.ismobile && TweenMax.set(SliderWrapper, { x: -positionLeft });
 
     setTimeout(() => {
-      TweenMax.set(SliderWrapper, { x: 0 });
+      this.ismobile && TweenMax.set(SliderWrapper, { x: 0 });
       TweenMax.to(slideTitle, 0.25, { opacity: 0, y: 15, delay: 0.85 });
       this.setState({ slideAnimated: update, isClicked: true });;
     }, 450)
@@ -130,8 +130,14 @@ class Home extends React.Component {
     }, 1400);
   }
 
+
+  handleClickNews(index, url, as)
+  {
+      Router.push(url, as, { shallow: true });
+  }
+
   followAnimation(update, element) {
-    TweenMax.set(SliderWrapper, { x: 0 });
+    this.ismobile && TweenMax.set(SliderWrapper, { x: 0 });
     this.setState({ slideAnimated: update, isClicked: true });
   }
 
@@ -149,7 +155,8 @@ class Home extends React.Component {
         const innerWidth = window.innerWidth < 768 ? window.innerWidth : window.innerWidth / 3;
         const totalWidth = innerWidth * (data.length + 1);
 
-        this.setState({
+        if (that._isMounted) {
+           this.setState({
           post: posts.data[0],
           data: data,
           slideAnimated: data.map(() => false),
@@ -158,6 +165,9 @@ class Home extends React.Component {
           indexation: 0,
           swipeIcon:true
         });
+        var tl = new TimelineMax({ repeat: 0 });
+        tl.staggerTo(".Slide", 0.1, {opacity: 1 }, 0.1);
+      }
 
         if (!this.ismobile) {
           window.addEventListener('touchstart', this.handleTouchStart, false);
@@ -211,8 +221,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    const that = this;
-
+    this._isMounted = true;
     this.fetchData(this.props.locale);
     
     //Animate Swipe icon
@@ -307,7 +316,6 @@ class Home extends React.Component {
       TweenMax.set(SliderWrapper, { x: scrollValue *  this.state.indexation });
     }
 
-    console.log(this.state.indexation);
     setTimeout(() => { this.updateArrow(); }, 0.3);
 
   }
@@ -344,19 +352,19 @@ class Home extends React.Component {
   }
 
   updateArrow() {
-    // var ChildrenNbr = document.getElementById('Slider').children.length;
+    var ChildrenNbr = document.getElementById('Slider').children.length;
 
-    // if (this.state.indexation > 0) {
-    //   document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
-    // } else {
-    //   document.querySelector('.Slider-arrow-prev').classList.add('disabled');
-    // }
+    if (this.state.indexation > 0) {
+      this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
+    } else {
+      this.ismobile &&  document.querySelector('.Slider-arrow-prev').classList.add('disabled');
+    }
 
-    // if (this.state.indexation < ChildrenNbr - 3) {
-    //   document.querySelector('.Slider-arrow-next').classList.remove('disabled');
-    // } else {
-    //   document.querySelector('.Slider-arrow-next').classList.add('disabled');
-    // }
+    if (this.state.indexation < ChildrenNbr - 2) {
+      this.ismobile &&  document.querySelector('.Slider-arrow-next').classList.remove('disabled');
+    } else {
+      this.ismobile &&  document.querySelector('.Slider-arrow-next').classList.add('disabled');
+    }
   }
 
   componentWillUnmount() {
@@ -371,6 +379,7 @@ class Home extends React.Component {
       // IE 6/7/8
       window.detachEvent("onmousewheel", this.scrollHorizontally);
     }
+    this._isMounted = false;
   }
 
   render() {
@@ -397,7 +406,7 @@ class Home extends React.Component {
         }
         <div id="Slider" className={`Slider ${(isClicked ? 'clicked' : '')}`} style={{ width: widthSlider }}>
           <div className="Slide" id="SlideInit" style={{ flexBasis: widthSlide }}>
-            <Link href="/news/[slug]" as={`/news/${post.slug}`}>
+            <div onClick={this.handleClickNews.bind(this,0, '/news/[slug]', `/news/${post.slug}`)}>
               <div className="Slide-content">
                 <p className="Slide-content-subtitle post">News</p>
                 <h3 className="Slide-content-title bold">{post.title.rendered}</h3>
@@ -406,7 +415,7 @@ class Home extends React.Component {
                 <div className={`Slide-content-img ${(isClicked ? 'clicked' : '')}`} style={{ backgroundImage: `url(${post.acf.image.url})` }} ></div>
                 <div className="SlideInit_bg"></div>
               </div>
-            </Link>
+              </div>
           </div>
           {data.map((page, index) => (
             <div className={`Slide ${(slideAnimated[index + 1] ? 'animate' : '')}`}

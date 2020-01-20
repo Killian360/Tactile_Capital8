@@ -57,6 +57,7 @@ class App extends React.Component {
           <link rel='icon' href='/favicon.ico' />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
           <meta name="viewport" content="width=device-width, user-scalable=no"></meta>
+          
         </Head>
 
         <div className={`Modal ${(isOpen ? 'open' : '')} Modal-video desktop`}>

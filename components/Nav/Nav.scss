@@ -132,9 +132,9 @@ input {
   @media screen and (min-width: 768px) {
     position: fixed;
     top: 0;
-    left: 0;
+    left: auto;
     right: 0;
-    width: 100vw;
+    width: auto;
     padding: 40px;
     z-index: 999;
     background-color:transparent;
@@ -358,7 +358,7 @@ display:none;
   background: rgb(0,91,68);
 background: linear-gradient(325deg, #0b3d71 0%, #086077 39%, #0f5f6b 100%);
 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;

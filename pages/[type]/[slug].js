@@ -8,8 +8,10 @@ import chunk from 'lodash.chunk'
 import ScrollIndicatorComponent from '../../components/ScrollIndicator'
 import Layout from '../../layouts'
 import Router from 'next/router'
+import VisibilitySensor from "react-visibility-sensor";
 
 import Plan3D from '../../components/Plan3D'
+import { useSpring, animated } from 'react-spring'
 
 import '../../styles/Page.scss'
 
@@ -20,6 +22,26 @@ import {
   Linear
 } from "gsap"
 
+const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWidth / 2) / 20, 1.1]
+const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
+
+function Plan(props) {
+  const [animationprops, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 7, tension: 100, friction: 60 } }))
+  return (
+    <animated.div
+    className="blueprint"
+    onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
+    onMouseLeave={() => set({ xys: [0, 0, 1] })}
+    style={{ transform: animationprops.xys.interpolate(trans) }}
+  >
+      {props.children}
+    </animated.div>
+  )
+}
+
+
+
+
 class Page extends React.Component {
 
   constructor(props) {
@@ -29,9 +51,10 @@ class Page extends React.Component {
       blocksToCompleteLine: 0,
       url: "undefined",
       as: "undefined",
-      isLoading:true
+      isLoading:true,
+      currentSlide: 0
     };
-
+    this.appear1 = false;
     this.fetchData = this.fetchData.bind(this);
     this.handleRef = this.handleRef.bind(this);
     this.Reroute = this.Reroute.bind(this);
@@ -71,7 +94,6 @@ class Page extends React.Component {
   }
 
 componentDidMount(){
-
      // prevent state error on unmounted component
     this._isMounted = true;
    
@@ -104,6 +126,7 @@ componentDidMount(){
           that.setState({
           pages: pages.data,
         });
+        console.log(pages.data)
       }
       }));
     }
@@ -123,10 +146,7 @@ componentDidMount(){
 
   clickToScroll()
   {
-    var body = document.body;  
-    var header = document.getElementById("Page-header");
-    var pos = header.clientHeight;
-      var pos = header.clientHeight;
+    var pos = document.getElementById("Page-header").clientHeight;
 
     window.scrollTo({
       top: pos,
@@ -184,9 +204,28 @@ componentWillUnmount()
   this._isMounted = false;
 }
 
+// afterChangeHandler(currentSlide, key) {
+//   console.log("slider", key);
+//   console.log("slide", currentSlide);
+  
+//  TweenMax.to(".Nbr"+key+ " .SliderDot_"+currentSlide,{opacity:0});
+
+// }
+
+onChange(isVisible, key){
+  console.log("visible");
+
+   TweenMax.to(".Page-header .Page-header-title" + key + "span",{opacity:1, bottom:0, delay:0.35});
+
+};
+
   render() {
     const { blocksToCompleteLine, pages } = this.state;
     const { page } = this.props;
+
+    const slickactive = {
+      fill: '#0F5F6B',
+  }
 
     const settings = {
       dots: true,
@@ -195,8 +234,31 @@ componentWillUnmount()
       autoplay: true,
       speed: 500,
       slidesToShow: 1,
-      slidesToScroll: 1
-    };
+      slidesToScroll: 1,
+      //   afterChange: (index) => this.setState({ currentSlide: index }),
+        // appendDots: dots => {
+          
+        //   return (
+        //     <div>
+        //       <ul>
+        //         {dots.map((item, index) => {
+        //           return (
+        //             <li key={index}>
+        //             <div> {item.props.children} </div>
+        //             <div className={"SliderDot_" + index}>
+        //             <SVG
+        //             src="/assets/svgs/slider_dots.svg"
+        //                    /> 
+        //               </div> 
+        //             </li>
+        //           );
+        //         })}
+        //       </ul>
+        //     </div>
+        //   )
+        // },
+
+     };
 
     return (
       <React.Fragment>
@@ -205,7 +267,7 @@ componentWillUnmount()
           <div className="Page-header" id="Page-header" >
             <div className="Page-header-slider-wrapper">
             <div className="darkEdge"></div>
-              <Slider {...settings} className="Page-header-slider">
+              <Slider  {...settings} className="Page-header-slider">
                 {page.acf.slider.map((image, index) => (
                   <div key={index} className="Page-header-slide">
                     <div style={{backgroundImage: "url(" + image.image.url + ")"}}>
@@ -230,7 +292,7 @@ componentWillUnmount()
             <React.Fragment>
               {page.acf['block_image'].map((image, index) => (
                 <div className="Page-image" key={index}>
-                  <img src={image.image.url} alt={image.image.alt} />
+                  {page.type == "espaces" ? <div className="blueprintWrapper"><Plan><img src={image.image.url} alt={image.image.alt} /></Plan></div> : <img src={image.image.url} alt={image.image.alt} />}
                 </div>
               ))}
             </React.Fragment>
@@ -240,8 +302,16 @@ componentWillUnmount()
             <React.Fragment>
               {page.acf['block_image_text'].map((item, key) => (
                 <div className="Page-header no-animation" key={key}>
+                                            <VisibilitySensor
+                containment={this.props.containment}
+                onChange={this.onChange.bind(this,key)}
+                partialVisibility={true}
+                minTopValue={100}
+                key={key}
+                >
                               <div className="darkEdge"></div>
-                  <Slider {...settings} className="Page-header-slider">
+                              </VisibilitySensor>
+                  <Slider ref={c => (this.slider = c)} {...settings} className={"Page-header-slider Nbr" + key}>
                     {item.slider.map((image, index) => (
                       <div key={index} className="Page-header-slide">
                         <div style={{backgroundImage: "url(" + image.image.url + ")"}}>
@@ -250,7 +320,6 @@ componentWillUnmount()
                       </div>
                     ))}
                   </Slider>
-
                   <div className="Page-header-content">
                     <div className="Page-header-text">
                       {page.acf.isNumbered &&
@@ -258,10 +327,10 @@ componentWillUnmount()
                           <p className="Page-header-number thin">{("0" + (key+1)).slice(-2)}</p>
                         </div>
                       }
-                      <h2 className="Page-header-title bold">
+                      <h2 className={("Page-header-title bold " + key )}>
                        <span>{item.title}</span>
                         </h2>
-                      <div className="Page-header-description" dangerouslySetInnerHTML={{__html: item.description}}></div>
+                      <div className={("Page-header-description" + key)} dangerouslySetInnerHTML={{__html: item.description}}></div>
                     </div>
                   </div>
                 </div>

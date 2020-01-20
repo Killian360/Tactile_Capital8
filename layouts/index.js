@@ -87,7 +87,6 @@ class Layout extends React.Component {
     }
 
     if (route === "/") {
-      console.log("test2");
       body.classList.add("overflow-none");
       conditions.hasFooter = false;
       conditions.isHome = true;

@@ -1,26 +1,42 @@
+.cardContact
+{
+  width:80%;
+  background-color: #FFF;
+  -webkit-box-shadow: 0px 1px 27px 5px rgba(0,0,0,0.2); 
+  box-shadow: 0px 1px 27px 5px rgba(0,0,0,0.2);
+  padding:7%;
+padding-left:8%;
+padding-right:15%;
+}
+
+
 .Contact {
-  min-height: calc(100vh - 53px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 10vw;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  left: 0;
+  position: absolute;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #FFF;
-  position:relative;
+  background-color: transparent;
 
   &-title {
     text-align: center;
     margin: 50px 0;
     color: #0F5F6B;
-    font-size: 4rem;
+    font-size: 8rem;
     line-height: 4rem;
+    display:none;
   }
 
   &-content {
-    width: 250px;
+    width: 100%;
 
     .wp-block-image {
       text-align: center;
@@ -33,7 +49,6 @@
     h3 {
       color: #0F5F6B;
       font-family: 'Poppins-Bold';
-      font-size: 1.4rem;
       text-transform: uppercase;
       letter-spacing: 3px;
       margin: 45px 0 0 0;
@@ -69,6 +84,9 @@
           text-decoration: underline;
         }
       }
+      @media screen and (max-width: 768px) {
+        font-size: 1.1rem;
+      }
     }
 
     .mail {
@@ -90,6 +108,16 @@
           text-decoration: underline;
         }
       }
+
+      @media screen and (max-width: 768px) {
+        font-size: 1.1rem;
+      }
+      
     }
+
+
+
+
+
   }
 }

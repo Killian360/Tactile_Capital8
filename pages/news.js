@@ -8,6 +8,13 @@ import labels from '../constants/labels'
 
 import '../styles/Posts.scss'
 
+import {
+  TweenMax,
+  Power1,
+  TimelineMax,
+  Linear
+} from "gsap"
+
 class Posts extends React.Component {
   constructor(props) {
     super(props);
@@ -16,16 +23,24 @@ class Posts extends React.Component {
     }
   }
 
+
+
   fetchData(locale) {
     const that = this;
 
     axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?filter[lang]=${locale}`)
       .then(function(response) {
+        if (that._isMounted) {
         that.setState({posts: response.data});
+
+        var tl = new TimelineMax({ repeat: 0 });
+        tl.staggerTo(".Posts-item", 0.25,{ opacity: 1}, 0.1);
+        }
       });
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData(this.props.locale);
   }
 
@@ -33,6 +48,11 @@ class Posts extends React.Component {
     if (this.props.locale !== prevProps.locale) {
       this.fetchData(this.props.locale);
     }
+  }
+
+  componentWillUnmount()
+  {
+    this._isMounted = false;
   }
 
   render() {

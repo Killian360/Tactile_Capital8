@@ -130,24 +130,7 @@ class Nav extends React.Component {
           </div>
         </div>
 
-        <div className="Nav">
-          <div className="Nav-header">
-            <div className="Nav-actions">
-              <div className="Nav-lang">
-                <LangSelector handleChangeLocale={handleChangeLocale} />
-                {/* <div onClick={() => handleChangeLocale('fr')}></div>
-                <div onClick={() => handleChangeLocale('en')}></div> */}
-              </div>
-              <div className={`Nav-burger ${(isOpen ? 'open' : '')} ${((isMenuBlue && !isOpen) ? 'blue' : '')}`} onClick={this.handleClick.bind(this)}>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          </div>
-          <div className="Nav-lang-mobile"><LangSelectorMobile handleChangeLocale={handleChangeLocale} /></div>
-          <div className={`Nav-menu Menu ${(isOpen ? 'open' : '')}`} onClick={this.handleClick.bind(this)}>
+        <div className={`Nav-menu Menu ${(isOpen ? 'open' : '')}`} onClick={this.handleClick.bind(this)}>
             <div className="Menu-content">
               <ul className="Menu-primary bold">
                 <li className="Menu-link">
@@ -200,6 +183,24 @@ class Nav extends React.Component {
               <p>{labels[locale].footer.copyright} <Link href="/legale"><a>{labels[locale].footer.legale}</a></Link></p>
             </div>
           </div>
+          
+        <div className="Nav">
+          <div className="Nav-header">
+            <div className="Nav-actions">
+              <div className="Nav-lang">
+                <LangSelector handleChangeLocale={handleChangeLocale} />
+                {/* <div onClick={() => handleChangeLocale('fr')}></div>
+                <div onClick={() => handleChangeLocale('en')}></div> */}
+              </div>
+              <div className={`Nav-burger ${(isOpen ? 'open' : '')} ${((isMenuBlue && !isOpen) ? 'blue' : '')}`} onClick={this.handleClick.bind(this)}>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+          <div className="Nav-lang-mobile"><LangSelectorMobile handleChangeLocale={handleChangeLocale} /></div>
         </div>
         <div onClick={() => this.handleClickTop.bind(this)}><TopButtonUI ID="TopBTN" /></div>
       </React.Fragment>

@@ -4,6 +4,11 @@ const withCSS = require('@zeit/next-css')
 const withImages = require('next-images')
 const withSvgr = require("next-svgr")
 
+//pollyfills config
+const withTM = require("next-transpile-modules");
+
+// next.config.js
+
 const nextConfig = {
   exportPathMap: () => ({
       '/': { page: '/' },
@@ -36,3 +41,4 @@ module.exports = withPlugins([
   ],
   { ...cssConfig, ...nextConfig },
 );
+

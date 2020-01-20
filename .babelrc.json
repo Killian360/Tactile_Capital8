@@ -1,0 +1,13 @@
+   {
+                "transform-runtime": {
+                    "useESModules": false
+                },
+                "preset-env": {
+                    "targets": {
+                        "browsers": [">0.03%"]
+                    },
+                    "useBuiltIns": "usage",
+                    "corejs": 2
+                }
+            }
+        ]

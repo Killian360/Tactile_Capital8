@@ -2,6 +2,8 @@
 .Layout-content
 {
   min-height:calc(100vh - 72px);
+  position:absolute;
+  width:100vw;
 }
 
 .Layout {

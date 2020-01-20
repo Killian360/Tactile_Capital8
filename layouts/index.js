@@ -81,6 +81,15 @@ class Layout extends React.Component {
       conditions.isLogoBlue = false;
     }
 
+    if (route === "/contact")
+    {
+      conditions.hasFooter = true;
+      conditions.isLogoBlue = false;
+      conditions.isNews = false;
+      conditions.isHome = false;
+    }
+
+
     if (query && query.type === undefined && query.slug !== undefined) {
       conditions.isNews = true;
       conditions.isHome = false;
@@ -164,8 +173,7 @@ componentWillUnmount()
         <Nav locale={locale} handleChangeLocale={handleChangeLocale} isLogoBlue={this.state.conditions.isLogoBlue} />
         <div className="Layout-content">
           {children}
-        </div>
-        {conditions.hasFooter &&
+          {conditions.hasFooter &&
           <div className="Layout-footer">
             <div className="Layout-footer-back">
               {conditions.isNews ? (
@@ -204,6 +212,7 @@ componentWillUnmount()
             </div>
           </div>
         }
+        </div>
       </div>
     )
   }

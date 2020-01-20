@@ -2,11 +2,39 @@
 {
   width:80%;
   background-color: #FFF;
-  -webkit-box-shadow: 0px 1px 27px 5px rgba(0,0,0,0.2); 
-  box-shadow: 0px 1px 27px 5px rgba(0,0,0,0.2);
-  padding:7%;
-padding-left:8%;
-padding-right:15%;
+  box-shadow: 0px 1px 20px 5px rgba(0,0,0,0.4);
+min-width:320px;
+background-image: url("/assets/images/contact/texture_card.webp");
+background-size: cover;
+}
+
+
+.Contact_wrapper
+{
+  width:100%;
+  min-height:calc(100vh - 73px);
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+
+.Contact_wrapper
+{
+  min-height:calc(100vh + 80px);
+}
+}
+
+.contact_background
+{
+  width:120%;
+  height:calc(100vh + 20%);
+  background-image: url("/assets/images/contact/desk_texture.webp");
+  background-size: cover;
+  position: absolute;
+  left:-10%;
+  top:-10%;
 }
 
 
@@ -25,6 +53,14 @@ padding-right:15%;
   max-width: 1200px;
   margin: 0 auto;
   background-color: transparent;
+  z-index:2;
+
+  @media screen and (max-width: 768px) {
+    padding-top: 10vw;
+    padding-bottom: 10vw;
+    top: 50%;
+
+  }
 
   &-title {
     text-align: center;
@@ -37,12 +73,19 @@ padding-right:15%;
 
   &-content {
     width: 100%;
+    padding:7%;
+    padding-left:8%;
+    padding-right:15%;
 
     .wp-block-image {
       text-align: center;
-
+      background-image: url("/assets/images/contact/logo-humakey.svg");
+      min-height:150px;
+      background-repeat: no-repeat;
+      background-position: center;
       img {
         width: 250px;
+        display:none;
       }
     }
 
@@ -52,6 +95,7 @@ padding-right:15%;
       text-transform: uppercase;
       letter-spacing: 3px;
       margin: 45px 0 0 0;
+      text-shadow: 0px 2px 0px #FFF;
 
       &:before {
         content: '';
@@ -66,6 +110,7 @@ padding-right:15%;
     .job {
       color: #999;
       font-size: 1.2rem;
+      text-shadow: 0px 2px 0px #FFF;
     }
 
     .numbers {
@@ -92,10 +137,10 @@ padding-right:15%;
     .mail {
       color: #0F5F6B;
       font-size: 1.3rem;
+      text-shadow: 0px 2px 0px #FFF;
 
       &:before {
         content: "";
-        background-image: url('/assets/svgs/envelop.svg');
         display: block;
         width: 10px;
       }

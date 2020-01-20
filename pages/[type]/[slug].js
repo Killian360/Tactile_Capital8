@@ -1,14 +1,11 @@
 import React from 'react'
-import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import axios from 'axios'
 import Slider from 'react-slick'
 import SVG from 'react-inlinesvg'
 import chunk from 'lodash.chunk'
 import ScrollIndicatorComponent from '../../components/ScrollIndicator'
-import Layout from '../../layouts'
 import Router from 'next/router'
-import VisibilitySensor from "react-visibility-sensor";
 
 import Plan3D from '../../components/Plan3D'
 import { useSpring, animated } from 'react-spring'
@@ -17,9 +14,6 @@ import '../../styles/Page.scss'
 
 import {
   TweenMax,
-  Power1,
-  TimelineMax,
-  Linear
 } from "gsap"
 
 const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWidth / 2) / 20, 1.1]
@@ -126,8 +120,8 @@ componentDidMount(){
           that.setState({
           pages: pages.data,
         });
-        console.log(pages.data)
       }
+      console.log(that.state.pages)
       }));
     }
 
@@ -186,38 +180,12 @@ var transitionWrapper = document.getElementById('transitionWrapper');
 }, 250)
 }
 
-// handleScrollCallBack(url, as)
-// {
-//   var lastScrollY = window.scrollY;
-//   console.log(scrollY);
-//   if (lastScrollY <= 0)
-//   {
-//     Router.push(url, as, { shallow: false });
-//     window.removeEventListener('scroll', this.handleScrollCallBack(url, as), true);
-//   }
-// }
-
 componentWillUnmount()
 {
   // component is unmounted*
   // prevent state error on unmounted component
   this._isMounted = false;
 }
-
-// afterChangeHandler(currentSlide, key) {
-//   console.log("slider", key);
-//   console.log("slide", currentSlide);
-  
-//  TweenMax.to(".Nbr"+key+ " .SliderDot_"+currentSlide,{opacity:0});
-
-// }
-
-onChange(isVisible, key){
-  console.log("visible");
-
-   TweenMax.to(".Page-header .Page-header-title" + key + "span",{opacity:1, bottom:0, delay:0.35});
-
-};
 
   render() {
     const { blocksToCompleteLine, pages } = this.state;
@@ -302,15 +270,7 @@ onChange(isVisible, key){
             <React.Fragment>
               {page.acf['block_image_text'].map((item, key) => (
                 <div className="Page-header no-animation" key={key}>
-                                            <VisibilitySensor
-                containment={this.props.containment}
-                onChange={this.onChange.bind(this,key)}
-                partialVisibility={true}
-                minTopValue={100}
-                key={key}
-                >
                               <div className="darkEdge"></div>
-                              </VisibilitySensor>
                   <Slider ref={c => (this.slider = c)} {...settings} className={"Page-header-slider Nbr" + key}>
                     {item.slider.map((image, index) => (
                       <div key={index} className="Page-header-slide">
@@ -327,10 +287,10 @@ onChange(isVisible, key){
                           <p className="Page-header-number thin">{("0" + (key+1)).slice(-2)}</p>
                         </div>
                       }
-                      <h2 className={("Page-header-title bold " + key )}>
+                      <h2 className={("Page-header-title bold ")}>
                        <span>{item.title}</span>
                         </h2>
-                      <div className={("Page-header-description" + key)} dangerouslySetInnerHTML={{__html: item.description}}></div>
+                      <div className={("Page-header-description")} dangerouslySetInnerHTML={{__html: item.description}}></div>
                     </div>
                   </div>
                 </div>

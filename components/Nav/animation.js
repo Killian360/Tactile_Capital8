@@ -13,10 +13,10 @@ export const animation = (animName) => {
       var calc = window.innerHeight-80;
       TweenMax.to(".Nav-footer",0.2, { opacity: 0}); 
       TweenMax.to(".Menu-secondary", 0.2, { opacity: 0});
-      TweenMax.set(Nav,{y:-calc});
+      TweenMax.to(Nav,0.4,{top:80});
     break;
     case 'Hide':
-      TweenMax.set(Nav,{y:"-100vh"});
+      TweenMax.to(Nav,0.4,{top:0});
     break;
       default:
     }

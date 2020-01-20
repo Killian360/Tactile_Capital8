@@ -69,11 +69,15 @@ class Nav extends React.Component {
     this.setState({ isOpen: !this.state.isOpen });
     if (this.state.isOpen === true) {
       TweenMax.to(".Nav-footer", 0.2, { opacity: 0 });
+      TweenMax.to(".Layout-content", 0.35, {top:"0", delay:0.2}, Power1.easeOut);
+      TweenMax.to(".Menu", 0.35, {top:"0", delay:0.2}, Power1.easeOut);
     } else {
       TweenMax.set(".Menu-link", { opacity: 0, y: -25 });
       TweenMax.set(".Menu-secondary", { opacity: 0 });
       var tl = new TimelineMax({ repeat: 0 });
       tl.staggerTo(".Menu-link", 0.11, { y: 25, opacity: 1 }, 0.1);
+      TweenMax.to(".Layout-content", 0.35, {top:"100vh"}, Power1.easeInOut);
+      TweenMax.to(".Menu", 0.35, {top:"100vh"}, Power1.easeInOut);
       TweenMax.to(".Menu-secondary", 0.2, { opacity: 1, delay: 0.35 });
       TweenMax.to(".Nav-footer", 0.2, { opacity: 1, delay: 0.35 });
     }
@@ -83,6 +87,9 @@ class Nav extends React.Component {
     setTimeout(() => {
       this.setState({ isOpen: false });
       var body = document.body;
+      TweenMax.to(".Nav-footer", 0.2, { opacity: 0 });
+      TweenMax.to(".Layout-content", 0.35, {top:"0", delay:0.3}, Power1.easeOut);
+      TweenMax.to(".Menu", 0.35, {top:"0", delay:0.3}, Power1.easeOut);
       body.classList.remove("overflow-none");
     }, 700)
   }
@@ -165,14 +172,14 @@ class Nav extends React.Component {
               <div className="Menu-secondary">
                 <Link href="/contact">
                   <SVG
-                    src="../../assets/svgs/envelop2.svg"
+                    src="../../assets/svgs/contact.svg"
                     style={{ fill: "#fff", display: "block" }}
                   />
                 </Link>
                 <div className="Menu-separator"></div>
                 <Link href="/medias">
                   <SVG
-                    src="../../assets/svgs/gallerie.svg"
+                    src="../../assets/svgs/photo.svg"
                     style={{ fill: "#fff", display: "block" }}
                   />
                 </Link>
@@ -183,7 +190,7 @@ class Nav extends React.Component {
               <p>{labels[locale].footer.copyright} <Link href="/legale"><a>{labels[locale].footer.legale}</a></Link></p>
             </div>
           </div>
-          
+
         <div className="Nav">
           <div className="Nav-header">
             <div className="Nav-actions">

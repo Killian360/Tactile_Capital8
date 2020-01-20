@@ -10,16 +10,25 @@ canvas {
   -ms-touch-action: none;
   touch-action: pan-y;
   image-rendering: -webkit-optimize-contrast;
-  left: 5vw;
-    position: relative;
-    cursor: grab;
+  left: 0;
+  position: relative;
+  cursor: grab;
   }
 
+  .Plan3D_gradient
+  {
+    position:absolute;
+    top:0;
+    width:100%;
+    height:80%;
+    left:0;
+    background: linear-gradient(173deg, #388a90 0%, #5386a3 0%, #a8cdda 51%, white 100%);
+  }
 
 .Plan3D {
   width: 100%;
-  background: rgb(167,196,201);
-  background: linear-gradient(180deg, rgba(167,196,201,1) 0%, rgba(167,196,201,1) 80%, rgba(241,241,241,1) 75.1%, rgba(241,241,241,1) 100%);
+  background:#f1f1f1;
+  // background: linear-gradient(180deg, rgba(167,196,201,1) 0%, rgba(167,196,201,1) 80%, rgba(241,241,241,1) 75.1%, rgba(241,241,241,1) 100%);
   height:700px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -28,6 +37,7 @@ canvas {
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently
                                 supported by Chrome, Opera and Firefox */
+                                position: relative;
 
   &-wrapper {
     max-width: 1200px;
@@ -54,16 +64,40 @@ canvas {
     fill:#0F5B63 !important;
   }
 
+  &-swipe-icon
+  {
+    position: absolute;
+    top: 15%;
+    right: 40px;
+    left: auto;
+    width: auto;
+    height: 70px;
+    fill: #FFF !important;
+    z-index:15;
+    animation: 1.5s infinite  alternate  swipe-anim;
+
+    @media screen and (max-width: 768px) {
+      top: 0%;
+      height: 50px;
+    }
+
+
+  }
+
   &-title {
     color: #fff;
     font-size: 4.5rem;
     text-decoration: underline;
-    margin: 45px 0 0 15px;
+    margin: 45px 0 0 0;
+    z-index:4;
+    text-align: center;
+
 
     @media screen and (min-width: 768px) {
       margin: 45px 0 0 45px;
           font-size: 5.5rem;
-
+          max-width: 300px;
+          text-align: left;
     }
   }
 
@@ -107,15 +141,20 @@ canvas {
 
   &-images {
     position: relative;
-    width: calc(100% * 1.1);
-    height: calc(100% * 1.1);
+    width: 60%;
     margin-top: 0;
-    top:-10%;
+    top:0%;
     display:flex;
+    right:5%;
+    height:65vh;
+    position: absolute;
+    z-index: 5;
 
     @media screen and (max-width: 768px) {
       margin-top: 0;
-      top:5%;
+      top:30%;
+      height: 60vh;
+      width:90%;
     }
   }
 
@@ -135,4 +174,9 @@ canvas {
       opacity: 1;
     }
   }
+}
+
+@keyframes swipe-anim {
+  0% {transform: translateX(-30px) }
+  100% { transform: translateX(30px) }
 }

@@ -151,11 +151,11 @@
     }
 
     .slick-dots {
-      bottom: calc(5% + 75px);
+      bottom: calc(5%);
       width: auto;
       cursor: pointer;
       z-index: 99;
-      right: 8%;
+      right: 5%;
       padding:10px;
 
       @media screen and (max-width: 768px) {

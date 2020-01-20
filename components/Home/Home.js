@@ -170,12 +170,12 @@ class Home extends React.Component {
       }
 
         if (!this.ismobile) {
-          window.addEventListener('touchstart', this.handleTouchStart, false);
-          window.addEventListener('touchmove', this.handleTouchMove, false);
+          window.addEventListener('touchstart', this.handleTouchStart, true);
+          window.addEventListener('touchmove', this.handleTouchMove, true);
         } else if (window.addEventListener) {
           window.addEventListener('wheel', this.scrollHorizontally, true);
         } else {
-          window.attachEvent("onmousewheel", this.scrollHorizontally, false);
+          window.attachEvent("onmousewheel", this.scrollHorizontally, true);
         }
       }));
   }
@@ -369,15 +369,15 @@ class Home extends React.Component {
 
   componentWillUnmount() {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      window.removeEventListener('touchstart', this.handleTouchStart, false);
-      window.removeEventListener('touchmove', this.handleTouchMove, false);
+      window.removeEventListener('touchstart', this.handleTouchStart, true);
+      window.removeEventListener('touchmove', this.handleTouchMove, true);
     } 
 
     if (window.removeEventListener) {
       window.removeEventListener("wheel", this.scrollHorizontally, true);
     } else {
       // IE 6/7/8
-      window.detachEvent("onmousewheel", this.scrollHorizontally);
+      window.detachEvent("onmousewheel", this.scrollHorizontally, true);
     }
     this._isMounted = false;
   }

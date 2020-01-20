@@ -62,6 +62,11 @@ class Plan3D extends React.Component {
         <div className="Plan3D-wrapper">
           <h3 className="Plan3D-title bold">{title}</h3>
           <div className="Plan3D-images">
+          <SVG
+            src="../../assets/svgs/swipe.svg"
+            className="Plan3D-swipe-icon"
+            style={{ fill: "#fff" }}
+            />
           <Viewer images={this.state.images} />
           </div>
           <SVG
@@ -70,6 +75,7 @@ class Plan3D extends React.Component {
             style={{ fill: "#fff" }}
             />
         </div>
+        <div className="Plan3D_gradient"></div>
       </div>
     )
   }

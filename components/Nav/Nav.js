@@ -33,7 +33,8 @@ class Nav extends React.Component {
     };
 
     this.video = React.createRef();
-  }
+    this.stopWheel = this.stopWheel.bind(this);
+    }
 
   fetchData(locale) {
     axios.all([
@@ -71,16 +72,31 @@ class Nav extends React.Component {
       TweenMax.to(".Nav-footer", 0.2, { opacity: 0 });
       TweenMax.to(".Layout-content", 0.35, {top:"0", delay:0.2}, Power1.easeOut);
       TweenMax.to(".Menu", 0.35, {top:"0", delay:0.2}, Power1.easeOut);
+      window.removeEventListener('wheel', this.stopWheel);
+      window.removeEventListener('touchmove', this.stopWheel, true);
     } else {
+      window.addEventListener('wheel', this.stopWheel);
+      window.addEventListener('touchmove', this.stopWheel, true);
+
       TweenMax.set(".Menu-link", { opacity: 0, y: -25 });
       TweenMax.set(".Menu-secondary", { opacity: 0 });
       var tl = new TimelineMax({ repeat: 0 });
       tl.staggerTo(".Menu-link", 0.11, { y: 25, opacity: 1 }, 0.1);
-      TweenMax.to(".Layout-content", 0.35, {top:"100vh"}, Power1.easeInOut);
+      TweenMax.to(".Layout-content", 0.35, {top:"100vh", position:"satic"}, Power1.easeInOut);
       TweenMax.to(".Menu", 0.35, {top:"100vh"}, Power1.easeInOut);
       TweenMax.to(".Menu-secondary", 0.2, { opacity: 1, delay: 0.35 });
       TweenMax.to(".Nav-footer", 0.2, { opacity: 1, delay: 0.35 });
     }
+  }
+
+  stopWheel()
+  {
+    TweenMax.to(".Nav-footer", 0.2, { opacity: 0 });
+    TweenMax.to(".Layout-content", 0.35, {top:"0", delay:0.2}, Power1.easeOut);
+    TweenMax.to(".Menu", 0.35, {top:"0", delay:0.2}, Power1.easeOut);
+    this.setState({ isOpen: false });
+    window.removeEventListener('wheel', this.stopWheel);
+    window.removeEventListener('touchmove', this.stopWheel, true);
   }
 
   closePanel() {

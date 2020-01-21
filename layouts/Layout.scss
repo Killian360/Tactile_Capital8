@@ -2,8 +2,8 @@
 .Layout-content
 {
   min-height:calc(100vh - 72px);
-  position:absolute;
   width:100vw;
+  position:absolute;
 }
 
 .Layout {
@@ -76,6 +76,16 @@
         &:hover {
           text-decoration: none;
           cursor: pointer;
+
+          svg {
+            width: 15px;
+            margin-right: 17px;
+            margin-left: 10px;
+            position: relative;
+            bottom: 0px;
+            transition: all 0.25s
+          }
+
         }
       }
 
@@ -85,6 +95,7 @@
         margin-left: 17px;
         position: relative;
         bottom: 0px;
+        transition: all 0.25s
       }
     }
 

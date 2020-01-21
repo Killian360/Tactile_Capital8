@@ -40,12 +40,30 @@ margin:0 !important;
   display:flex;
   cursor:pointer;
   margin-left:15px;
+
+  &:hover {
+
+    svg {
+      width: 15px;
+      margin-right: 15px;
+      margin-left: 15px;
+      position: relative;
+      bottom: 0px;
+      transform: scale(1.2);
+      transition: all 0.25s
+    }
+
+  }
+
 }
 
 .allNews_desktop svg
 {
   fill:#FFF !important;
-  margin-right:15px !important;
+  margin-right:15px;
+  margin-left: 15px;
+  transform: scale(1);
+  transition: all 0.25s
 }
 
 }
@@ -164,7 +182,7 @@ margin:0 !important;
       }
 
       & svg {
-        width: 17px;
+        width: 22px;
         margin: 0 5px;
         cursor: pointer;
         height: 40px;

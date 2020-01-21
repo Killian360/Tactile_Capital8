@@ -162,8 +162,6 @@ class Home extends React.Component {
           slideAnimated: data.map(() => false),
           widthSlider: totalWidth,
           widthSlide: innerWidth,
-          indexation: 0,
-          swipeIcon:true
         });
         var tl = new TimelineMax({ repeat: 0 });
         tl.staggerTo(".Slide", 0.1, {opacity: 1 }, 0.1);
@@ -184,7 +182,6 @@ class Home extends React.Component {
     var firstTouch = e.changedTouches[0];
     this.xDown = parseInt(firstTouch.clientX);
     this.yDown = parseInt(firstTouch.clientY);
-    console.log("event start done")
   }
 
   handleTouchMove(evt) {

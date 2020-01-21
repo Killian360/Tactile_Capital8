@@ -1,14 +1,11 @@
 import React from 'react'
-import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import Slider from 'react-slick'
 import SVG from 'react-inlinesvg'
 
-import Layout from '../layouts'
-
-import Button from '../components/Button'
-
 import '../styles/Medias.scss'
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/opacity.css';
 
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
@@ -86,8 +83,13 @@ class Medias extends React.Component {
         <React.Fragment>
           <div className="Medias">
             {medias.map((media, index) => (
-              <div key={index} className="Medias-item" style={{ backgroundImage: "url(" + media.source_url + ")" }} onClick={this.handleClick.bind(this, index)}>
-                <div className="Medias-item-overlay"></div>
+              <div key={index} className="Medias-item"  onClick={this.handleClick.bind(this, index)}>
+                                <LazyLoadImage
+                alt={media.alt}
+                height="100%"
+                effect="opacity"
+                src={media.source_url} // use normal <img> attributes as props
+                width="100%" />
               </div>
             ))}
             <div className="clear"></div>

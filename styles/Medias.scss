@@ -1,14 +1,32 @@
+.wrapperImg
+{
+  position:absolute;
+  overflow:hidden;
+  width:100%;
+}
+
+.lazy-load-image-background
+{
+  height:33.33vw !important;
+}
+
 .Medias {
   min-height: calc(100vh - 53px);
   background-color: #0F5F6B;
+  background-size: cover;
 
   &-item {
     width: 100%;
-    height: 50vh;
+    background-image: url("/assets/images/media/placeholder.svg");
     background-size: cover;
     background-position: center;
-    display: inline-block;
-    float: left;
+    display:inline-block;
+    
+    & > span img
+    {
+      height:100% !important;
+      object-fit: cover;
+    }
 
     @media screen and (min-width: 768px) {
       width: 33.333333%;

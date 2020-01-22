@@ -1,19 +1,14 @@
 import React from 'react'
 import Router from 'next/router'
-import Link from 'next/link'
 import axios from 'axios'
 import orderBy from 'lodash.orderby'
-import { PageTransition } from 'next-page-transitions'
-import Slider from 'react-slick'
 import SVG from 'react-inlinesvg'
-import WheelReact from 'wheel-react';
-// import * as animate from "./animation.js";
+import { connect } from "react-redux";
+import {store} from './combinereducers.js';
 
 import {
   TweenMax,
-  Power1,
   TimelineMax,
-  Linear
 } from "gsap"
 
 import labels from '../../constants/labels'
@@ -21,6 +16,12 @@ import labels from '../../constants/labels'
 import Button from '../../components/Button'
 
 import './Home.scss'
+
+const mapStateToProps = state => {
+  return {
+    SLIDER_INDEXATION: state.SLIDER_INDEXATION,
+  };
+};
 
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
@@ -53,7 +54,7 @@ function incrementIndexation(delta) {
       return { ...previousState, indexation: ChildrenNbr-1 };
       } else 
       {
-      return { ...previousState, indexation: previousState.indexation + delta };
+      return { ...previousState, indexation: previousState.indexation + delta};
       }
   };
 }
@@ -64,7 +65,7 @@ function decrementIndexation(delta) {
     return { ...previousState, indexation: 0 };
     } else 
   {
-      return { ...previousState, indexation: previousState.indexation - delta };
+      return { ...previousState, indexation: previousState.indexation - delta};
   };
   }
 }
@@ -115,6 +116,15 @@ class Home extends React.Component {
 
     var positionLeft = SliderWidth / ChildrenNbr * (index - 1);
 
+    //Dispatch center index for Redux store
+    var indexCenter;
+    
+    this.ismobile ? (index < ChildrenNbr-2) ? indexCenter = index-1 : indexCenter=ChildrenNbr-3 : indexCenter = index;
+
+    console.log(indexCenter);
+
+    store.dispatch({type: 'setIndex', index:indexCenter});
+
     // Animate slider & title
     var slideTitle = document.getElementsByClassName('Slide-content-title bold');
     this.ismobile && TweenMax.set(SliderWrapper, { x: -positionLeft });
@@ -136,7 +146,7 @@ class Home extends React.Component {
       Router.push(url, as, { shallow: true });
   }
 
-  followAnimation(update, element) {
+  followAnimation(update) {
     this.ismobile && TweenMax.set(SliderWrapper, { x: 0 });
     this.setState({ slideAnimated: update, isClicked: true });
   }
@@ -165,6 +175,13 @@ class Home extends React.Component {
         });
         var tl = new TimelineMax({ repeat: 0 });
         tl.staggerTo(".Slide", 0.1, {opacity: 1 }, 0.1);
+        var SliderWrapper = document.getElementsByClassName("Slider ");
+        var ChildrenNbr = document.getElementById('Slider').children.length;
+        var SliderWidth = document.getElementById('Slider').offsetWidth;
+
+        var scrollValue = -SliderWidth / ChildrenNbr; 
+    
+        TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
       }
 
         if (!this.ismobile) {
@@ -220,7 +237,6 @@ class Home extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.fetchData(this.props.locale);
-    
     //Animate Swipe icon
     // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
     // {
@@ -244,7 +260,7 @@ class Home extends React.Component {
     var SlideroffsetsRight = Slideroffsets.right;
 
     var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.deltaY)));
-    var scrollSpeed = delta * 70; // Janky jank <<<<<<<<<<<<<<
+    var scrollSpeed = delta * 50; // Janky jank <<<<<<<<<<<<<<
 
     //Wheel down
 
@@ -285,23 +301,26 @@ class Home extends React.Component {
     var ChildrenNbr = document.getElementById('Slider').children.length;
 
     if (!this.ismobile) {
-      for (var i = 0; i < ChildrenNbr-1; i++) {
-        if (SlideroffsetsLeft <= -SliderWidth / ChildrenNbr * i) {
-          this.setState(SetIndexation(i));
-        }
-      };
+      // for (var i = 0; i < ChildrenNbr-1; i++) {
+      //   if (SlideroffsetsLeft <= -SliderWidth / ChildrenNbr * store.getState().SLIDER_INDEXATION) {
+      //     store.dispatch({type: 'IncrementIndexation'});
+      //   }
+      // };
     } else {
-      for (var i = 0; i < ChildrenNbr - 3; i++) {
-        if (SlideroffsetsLeft <= -SliderWidth / ChildrenNbr - 200 * i) {
-          this.setState((state) => ({ indexation: i }));
-        }
-      };
+     if (SlideroffsetsLeft <= (-SliderWidth/ChildrenNbr -100) * store.getState().SLIDER_INDEXATION)
+     {
+      store.dispatch({type: 'IncrementIndexation'});
+    } else if (SlideroffsetsLeft > -SliderWidth / ChildrenNbr * store.getState().SLIDER_INDEXATION)
+    {
+      store.dispatch({type: 'DecrementIndexation'});
+    }
     }
   }
 
 
   handlePrev() {
-    this.setState(decrementIndexation(1));
+    store.dispatch({type: 'DecrementIndexation'});
+
     var SliderWrapper = document.getElementsByClassName("Slider ");
     var SliderWidth = document.getElementById('Slider').offsetWidth;
 
@@ -309,10 +328,13 @@ class Home extends React.Component {
     var ChildrenNbr = document.getElementById('Slider').children.length;
     var scrollValue = -SliderWidth / ChildrenNbr;
 
-    if (this.state.indexation >= 0) {
-      TweenMax.set(SliderWrapper, { x: scrollValue *  this.state.indexation });
+    if (store.getState().SLIDER_INDEXATION >= 0) {
+      TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
+    } else {
+      TweenMax.set(SliderWrapper, { x: 0});
+      store.dispatch({type: 'setIndex', index:0});
     }
-
+    this.setState({swipeIcon:false})
     setTimeout(() => { this.updateArrow(); }, 0.3);
 
   }
@@ -328,36 +350,38 @@ class Home extends React.Component {
   }
 
   handleNext() {
-    this.setState(incrementIndexation(1));
     var SliderWrapper = document.getElementsByClassName("Slider ");
     var ChildrenNbr = document.getElementById('Slider').children.length;
 
+    store.dispatch({type: 'IncrementIndexation'});
+
     //Scroll value
     var SliderWidth = document.getElementById('Slider').offsetWidth;
+
     var scrollValue = -SliderWidth / ChildrenNbr;
 
     var maxIndex = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? ChildrenNbr-1 : ChildrenNbr-3;
 
-    if ( this.state.indexation < maxIndex+1) {
-      TweenMax.set(SliderWrapper, { x: scrollValue * this.state.indexation });
-    } else if (this.state.indexation > maxIndex) {
-      this.setState(SetIndexation(maxIndex));
+    if ( store.getState().SLIDER_INDEXATION < maxIndex+1) {
+      TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
+    } else if (store.getState().SLIDER_INDEXATION > maxIndex) {
+      store.dispatch({type: 'setIndex', index:maxIndex});
+      TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
     }
     this.setState({swipeIcon:false})
-
     setTimeout(() => { this.updateArrow(); }, 0.3);
   }
 
   updateArrow() {
     var ChildrenNbr = document.getElementById('Slider').children.length;
 
-    if (this.state.indexation > 0) {
+    if (store.getState().SLIDER_INDEXATION > 0) {
       this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
     } else {
       this.ismobile &&  document.querySelector('.Slider-arrow-prev').classList.add('disabled');
     }
 
-    if (this.state.indexation < ChildrenNbr - 2) {
+    if (store.getState().SLIDER_INDEXATION < ChildrenNbr - 3) {
       this.ismobile &&  document.querySelector('.Slider-arrow-next').classList.remove('disabled');
     } else {
       this.ismobile &&  document.querySelector('.Slider-arrow-next').classList.add('disabled');
@@ -437,4 +461,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home
+export default connect(mapStateToProps) (Home)

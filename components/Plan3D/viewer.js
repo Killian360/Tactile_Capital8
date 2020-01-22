@@ -23,8 +23,8 @@ class Viewer extends Component {
       canvas.addEventListener("touchstart", this.handleTouchStart, false);
       canvas.addEventListener("mousemove", this.handleMouseMove, false);
       canvas.addEventListener("touchmove", this.handleTouchMove, false);
-      canvas.addEventListener("mouseup", this.handleMouseUp, false);
-      canvas.addEventListener("touchend", this.handleMouseUp, false);
+      window.addEventListener("mouseup", this.handleMouseUp, false);
+      window.addEventListener("touchend", this.handleMouseUp, false);
 
       this.drawImage(0);
     });
@@ -38,8 +38,8 @@ class Viewer extends Component {
     canvas.removeEventListener("touchstart", this.handleTouchStart, false);
     canvas.removeEventListener("mousemove", this.handleMouseMove, false);
     canvas.removeEventListener("touchmove", this.handleTouchMove, false);
-    canvas.removeEventListener("mouseup", this.handleMouseUp, false);
-    canvas.removeEventListener("touchend", this.handleMouseUp, false);
+    window.removeEventListener("mouseup", this.handleMouseUp, false);
+    window.removeEventListener("touchend", this.handleMouseUp, false);
   }
 
   loadImages() {
@@ -155,6 +155,7 @@ class Viewer extends Component {
 
       if (this.animation === null) {
         this.animation = requestAnimationFrame(this.animationFrame);
+
       }
     }
   };

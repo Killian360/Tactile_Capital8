@@ -65,8 +65,9 @@ b, strong
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #0F5F6B;
+    background: linear-gradient(325deg, #0b3d71 0%, #086077 39%, #0f5f6b 100%);
     padding-top: 0px;
+
   }
 
   &-button-video {

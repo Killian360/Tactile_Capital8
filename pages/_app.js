@@ -3,6 +3,10 @@ import App from 'next/app';
 import Router from 'next/router';
 import axios from 'axios';
 
+import {Provider} from 'react-redux';
+import {store} from '../components/Home/combinereducers.js';
+import { connect } from "react-redux";
+
 import Layout from '../layouts';
 
 class Capital8 extends App {
@@ -61,9 +65,11 @@ class Capital8 extends App {
     }
 
     return (
+      <Provider store={store}>
       <Layout {...pageProps} route={router.pathname} handleChangeLocale={this.handleChangeLocale.bind(this)} locale={locale}>
         <Component {...pageProps} locale={locale} />
       </Layout>
+      </Provider>
     );
   }
 }

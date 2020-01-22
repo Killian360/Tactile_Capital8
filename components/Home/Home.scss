@@ -13,6 +13,7 @@ Body
   z-index: 5;
   max-width: 70px;
   animation: 1.5s blink infinite ;
+  pointer-events: none;
 }
 
 @keyframes blink {
@@ -92,7 +93,7 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
      -moz-user-select: none; /* Old versions of Firefox */
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; 
-    transition: all 0.35s ease !important;
+    transition: all 0.35s !important;
 
   &.clicked {
 

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import Layout from '../layouts';
 
 import { gsap } from 'gsap'
-import { CSSPlugin } from 'gsap/CSSPlugin'
+import { CSSPlugin } from 'gsap'
 
 
 // Force CSSPlugin to not get dropped during build
@@ -74,7 +74,9 @@ class Capital8 extends App {
     return (
       <Provider store={store}>
       <Layout {...pageProps} route={router.pathname} handleChangeLocale={this.handleChangeLocale.bind(this)} locale={locale}>
+        <div className="content-wrapper">
         <Component {...pageProps} locale={locale} />
+        </div>
       </Layout>
       </Provider>
     );

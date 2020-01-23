@@ -4,6 +4,7 @@ import {
   Power4
 } from "gsap";
 
+
 export const animation = (animName) => {
 
   function HoverCallback()

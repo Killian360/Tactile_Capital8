@@ -90,6 +90,7 @@ margin:0 !important;
   @media screen and (min-width: 768px) {
     flex-flow: row;
     height: calc(100vh - 72px);
+    min-height: calc(100vh - 72px);
   }
 
   &-wrapper {

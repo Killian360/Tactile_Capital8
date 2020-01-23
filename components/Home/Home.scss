@@ -82,8 +82,8 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
 }
 
 .Slider {
-  display: flex;
   height: 100vh;
+  display: flex;
   position:absolute;
   z-index:1;
   touch-action: none;
@@ -93,7 +93,13 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
      -moz-user-select: none; /* Old versions of Firefox */
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; 
-    transition: all 0.35s !important;
+    transition: all 0.35s ease !important;
+    -webkit-transition: all 0.35s ease;   // Old Chrome, Safari
+    -moz-transition: all 0.35s ease;      // Old Firefox
+    -ms-transition: all 0.35s ease;       // Internet Explorer
+    -o-transition: all 0.35s ease;        // Old Opera
+    transition: all 0.35s ease;           // Newer Browsers
+    transform: translate3d(0, 0, 0);
 
   &.clicked {
 
@@ -172,7 +178,7 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
   overflow: hidden;
   min-width: 0;
   opacity:0;
-
+  
   &.animate {
     flex-basis: 100vw !important;
     flex-grow: 0;

@@ -1,7 +1,7 @@
 
 .Layout-content
 {
-  min-height:calc(100vh - 72px);
+  min-height:100vh;
   width:100vw;
   position:absolute;
 }
@@ -16,11 +16,12 @@
     flex-direction: column;
     justify-content: center;
     padding: 15px;
-    position: relative;
-    bottom:0;
+    width: 100vw;
+    bottom: 0;
 
     @media screen and (min-width: 768px) {
       flex-direction: row;
+      max-height: 71px;
     }
 
     &-back {
@@ -72,6 +73,7 @@
           margin-bottom: 0;
           line-height: 40px;
           margin-left: 15px;
+          max-height:40px;
         }
         &:hover {
           text-decoration: none;

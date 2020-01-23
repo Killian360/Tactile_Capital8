@@ -45,38 +45,6 @@ const PrevArrow = (props) => {
   );
 }
 
-
-function incrementIndexation(delta) {
-  var ChildrenNbr = document.getElementById('Slider').children.length;
-   
-  return (previousState) => {
-    if (previousState.indexation == ChildrenNbr-1) {
-      return { ...previousState, indexation: ChildrenNbr-1 };
-      } else 
-      {
-      return { ...previousState, indexation: previousState.indexation + delta};
-      }
-  };
-}
-
-function decrementIndexation(delta) {
-  return (previousState) => {
-  if (previousState.indexation == 0) {
-    return { ...previousState, indexation: 0 };
-    } else 
-  {
-      return { ...previousState, indexation: previousState.indexation - delta};
-  };
-  }
-}
-
-function SetIndexation(index)
-{
-  return (previousState) => {
-      return { ...previousState, indexation: previousState.indexation=index };
-  };
-}
-
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -128,6 +96,8 @@ class Home extends React.Component {
     // Animate slider & title
     var slideTitle = document.getElementsByClassName('Slide-content-title bold');
     this.ismobile && TweenMax.set(SliderWrapper, { x: -positionLeft });
+    this.updateArrow();
+    this.deactivateArrow();
 
     setTimeout(() => {
       this.ismobile && TweenMax.set(SliderWrapper, { x: 0 });
@@ -140,6 +110,12 @@ class Home extends React.Component {
     }, 1400);
   }
 
+
+  deactivateArrow()
+  {
+    TweenMax.set(".Slider-arrow", { pointerEvents: "none"});
+    TweenMax.set(".Slider", { pointerEvents: "none"});
+  }
 
   handleClickNews(index, url, as)
   {
@@ -172,7 +148,9 @@ class Home extends React.Component {
           slideAnimated: data.map(() => false),
           widthSlider: totalWidth,
           widthSlide: innerWidth,
-        });
+        }
+        
+        );
         var tl = new TimelineMax({ repeat: 0 });
         tl.staggerTo(".Slide", 0.1, {opacity: 1 }, 0.1);
         var SliderWrapper = document.getElementsByClassName("Slider ");
@@ -180,10 +158,10 @@ class Home extends React.Component {
         var SliderWidth = document.getElementById('Slider').offsetWidth;
 
         var scrollValue = -SliderWidth / ChildrenNbr; 
-    
         TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
+        console.log(store.getState().SLIDER_INDEXATION);
+        setTimeout(() => { this.updateArrow(); }, 350);
       }
-
         if (!this.ismobile) {
           window.addEventListener('touchstart', this.handleTouchStart, true);
           window.addEventListener('touchmove', this.handleTouchMove, true);
@@ -192,7 +170,8 @@ class Home extends React.Component {
         } else {
           window.attachEvent("onmousewheel", this.scrollHorizontally, true);
         }
-      }));
+      })
+      )
   }
 
   handleTouchStart(e) {
@@ -264,14 +243,14 @@ class Home extends React.Component {
 
     //Wheel down
 
-    if (SlideroffsetsRight <= window.innerWidth && delta < 1) {
+    console.log(window.innerWidth/7);
+    if (SlideroffsetsRight <= window.innerWidth + 300 && delta < 1) {
       TweenMax.set(SliderWrapper, { x: -SliderWidth + window.innerWidth });
-
       this.ismobile && document.querySelector('.Slider-arrow-next').classList.add('disabled');
 
     } else if (SlideroffsetsLeft <= 0 && delta < 1) {
 
-      TweenMax.set(SliderWrapper, { x: "+=" + scrollSpeed });
+      TweenMax.set(SliderWrapper, { x: "+=" + scrollSpeed, rotation:0.01, z:0.01, force3D:true });
 
       this.ismobile && document.querySelector('.Slider-arrow-next').classList.remove('disabled');
       this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
@@ -280,13 +259,13 @@ class Home extends React.Component {
 
     //Wheel up
 
-    if (SlideroffsetsRight >= SliderWidth && delta >= 1) {
+    if (SlideroffsetsRight >= SliderWidth -300 && delta >= 1) {
 
       TweenMax.set(SliderWrapper, { x: 0 });
       this.ismobile && document.querySelector('.Slider-arrow-prev').classList.add('disabled');
     } else if (SlideroffsetsRight < SliderWidth && delta >= 1) {
 
-      TweenMax.set(SliderWrapper, { x: "+=" + scrollSpeed });
+      TweenMax.set(SliderWrapper, { x: "+=" + scrollSpeed, rotation:0.01, z:0.01, force3D:true });
 
       this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
       this.ismobile && document.querySelector('.Slider-arrow-next').classList.remove('disabled');
@@ -335,7 +314,7 @@ class Home extends React.Component {
       store.dispatch({type: 'setIndex', index:0});
     }
     this.setState({swipeIcon:false})
-    setTimeout(() => { this.updateArrow(); }, 0.3);
+    setTimeout(() => { this.updateArrow(); }, 350);
 
   }
 
@@ -369,23 +348,28 @@ class Home extends React.Component {
       TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
     }
     this.setState({swipeIcon:false})
-    setTimeout(() => { this.updateArrow(); }, 0.3);
+    this.updateArrow();
   }
 
   updateArrow() {
     var ChildrenNbr = document.getElementById('Slider').children.length;
+    var elemPrev = document.querySelector('.Slider-arrow-prev');
+    var elemNext = document.querySelector('.Slider-arrow-next');
+    TweenMax.set(".Slider-arrow", { pointerEvents: "auto"});
+    TweenMax.set(".Slider", { pointerEvents: "auto"});
 
-    if (store.getState().SLIDER_INDEXATION > 0) {
-      this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
-    } else {
-      this.ismobile &&  document.querySelector('.Slider-arrow-prev').classList.add('disabled');
-    }
+    console.log("updateee", ChildrenNbr - 3,store.getState().SLIDER_INDEXATION );
 
-    if (store.getState().SLIDER_INDEXATION < ChildrenNbr - 3) {
-      this.ismobile &&  document.querySelector('.Slider-arrow-next').classList.remove('disabled');
-    } else {
-      this.ismobile &&  document.querySelector('.Slider-arrow-next').classList.add('disabled');
+    if (store.getState().SLIDER_INDEXATION > 0 && store.getState().SLIDER_INDEXATION < ChildrenNbr - 3) {
+      (this.ismobile && elemPrev) && elemPrev.classList.remove('disabled');
+      (this.ismobile && elemNext) && elemNext.classList.remove('disabled'); 
+    } else if (store.getState().SLIDER_INDEXATION >= ChildrenNbr - 3)  {
+      (this.ismobile && elemNext) && elemNext.classList.add('disabled'); 
     }
+      else if (store.getState().SLIDER_INDEXATION == 0)
+       {
+        (this.ismobile && elemPrev) && elemPrev.classList.add('disabled'); 
+       }
   }
 
   componentWillUnmount() {
@@ -413,7 +397,7 @@ class Home extends React.Component {
     return (
       <div className="Home">
         {this.ismobile &&
-        <div><PrevArrow className="Slider-arrow Slider-arrow-prev disabled" onClick={this.leftClick.bind(this)} />
+        <div><PrevArrow className="Slider-arrow Slider-arrow-prev" onClick={this.leftClick.bind(this)} />
         <NextArrow className="Slider-arrow Slider-arrow-next" onClick={this.rightClick.bind(this)} />
         </div>
         }

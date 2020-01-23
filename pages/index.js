@@ -28,6 +28,7 @@ class App extends React.Component {
 
     this.state = {
       isOpen: false,
+      play : false
     };
   }
 
@@ -42,10 +43,16 @@ class App extends React.Component {
   handleClick() {
     localStorage.setItem('isModalOpen', false);
     this.setState({ isOpen: false });
+    this.setState({play : false});
+  }
+
+  LaunchVid()
+  {
+  this.setState({play : true});
   }
 
   render() {
-    const { isOpen, post, data } = this.state;
+    const { isOpen, post, data, play } = this.state;
     const { locale } = this.props;
 
     return (
@@ -68,9 +75,16 @@ class App extends React.Component {
              />
           </div>
           <div className="Modal-content">
-          {this.isMobile ? <ReactPlayer url='https://player.vimeo.com/video/383108369?autoplay=0&title=0&byline=0&controls=0&portrait=0?api=1'playing={this.state.isOpen} height="140%" width="140%" />
+            <div className={`overlay_video ${(play ? 'isPlaying' : '')}`}>
+            <div className="video_play_btn" onClick={this.LaunchVid.bind(this)}>
+            <SVG
+              src="/assets/svgs/play.svg"
+             />
+            </div>
+            </div>
+          {this.isMobile ? <ReactPlayer url='https://player.vimeo.com/video/383108369?autoplay=0&title=0&byline=0&controls=&portrait=0?api=1'  playing={this.state.play} controls={false} height="140%" width="140%" />
               :
-              <ReactPlayer url='https://player.vimeo.com/video/383108369?autoplay=0&title=0&byline=0&controls=0&portrait=0?api=1' playing={this.state.isOpen} height="100%" width="100%" />}
+              <ReactPlayer url='https://player.vimeo.com/video/383108369?autoplay=0&title=0&byline=0&controls=1&portrait=0?api=1' playing={this.state.play} height="100%" width="100%" />}
           {/* style={{position:"absolute", top:0 ,bottom:0, width:"100%",height: "110%", margin: "auto"}} */}
               <Button className="Modal-button-video">
               <div onClick={this.handleClick.bind(this)}>

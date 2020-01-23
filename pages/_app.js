@@ -9,6 +9,13 @@ import { connect } from "react-redux";
 
 import Layout from '../layouts';
 
+import { gsap } from 'gsap'
+import { CSSPlugin } from 'gsap/CSSPlugin'
+
+
+// Force CSSPlugin to not get dropped during build
+gsap.registerPlugin(CSSPlugin)
+
 class Capital8 extends App {
   constructor(props) {
     super(props);

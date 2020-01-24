@@ -1804,7 +1804,6 @@ var ScrollHorizontal = function (_Component) {
 
             var scrollingElementStyles = {
               transform: 'translate3d(' + z + 'px, 0,0)',
-              display: 'inline-flex',
               height: '100%',
               position: 'absolute',
               willChange: 'transform'

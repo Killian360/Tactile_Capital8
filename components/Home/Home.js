@@ -14,6 +14,7 @@ import {
   TimelineMax,
   Power4,
   Power3,
+  Linear
 } from "gsap"
 
 import labels from '../../constants/labels'
@@ -85,15 +86,16 @@ class Home extends React.Component {
     update[index] = true;
 
     //Recenter element before expand
-    var SliderWrapper = document.getElementsByClassName('Slider');
-    var ChildrenNbr = document.querySelector('.scroll-horizontal-wrapper').children.length;
-    
+    var SliderWrapper = document.getElementsByClassName('scroll-horizontal-wrapper');
+    var Slider = document.getElementById('Slider');
+    var ChildrenNbr = document.querySelector('.Slider').children.length;
+    var OffsetWidth = document.querySelector('.scroll-horizontal-wrapper').getBoundingClientRect().left;
+    var SliderWidth = document.getElementById('Slider').offsetWidth;
 
-    var SliderWidth = window.innerWidth/3 * ChildrenNbr;
 
-    var positionLeft = SliderWidth / ChildrenNbr * (index - 1);
-     
-    console.log(SliderWrapper);
+    var positionLeft = SliderWidth / ChildrenNbr * (index - 1) + OffsetWidth;
+    console.log(OffsetWidth);
+
     var indexCenter;
 
     this.ismobile ? (index < ChildrenNbr - 2) ? indexCenter = index - 1 : indexCenter = ChildrenNbr - 3 : indexCenter = index;
@@ -104,16 +106,17 @@ class Home extends React.Component {
     // Animate slider & title
     var slideTitle = document.getElementsByClassName('Slide-content-title bold');
    
-    this.ismobile && TweenMax.to(SliderWrapper,0.4, { x: -positionLeft ,y:0,z:0, force3D:true});
-   
+    this.ismobile && TweenMax.to(Slider,0.4,{ x:-positionLeft ,y:0,z:0, force3D:true});
+    // this.ismobile && TweenMax.to(Slider,0.4, { x: -positionLeft - window.innerWidth/3 ,y:0,z:0, force3D:true}, Power3.easeOut);
+
     this.updateArrow();
     this.deactivateArrow();
 
     setTimeout(() => {
-      this.ismobile && TweenMax.set(SliderWrapper, { x: 0});
+      this.ismobile && TweenMax.set(Slider,{ x: "-=" + window.innerWidth/3});
       this.setState({ slideAnimated: update, isClicked:true});
       TweenMax.to(slideTitle, 0.35, { opacity: 0, y: 15, delay: 0.85 });
-    }, 650)
+    }, 450)
 
     setTimeout(function () {
       Router.push(url, as, { shallow: true });
@@ -513,7 +516,7 @@ handleNextMobile() {
           key={index}
           onClick={this.handleClick.bind(this, (index + 1), '/[type]/[slug]', `/${page.type}/${page.slug}`)}
           >
-          <div className="Slide-wrapper">
+          <div className={`Slider-wrapper ${(slideAnimated[index + 1] ? 'animate' : '')}`}>
             <div className="Slide-content">
               <p className="Slide-content-subtitle">{page.acf.subtitle}</p>
               <h3 className="Slide-content-title bold">{page.title.rendered}</h3>

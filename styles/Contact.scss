@@ -10,10 +10,10 @@ transition: box-shadow 0.5s;
 will-change: transform;
 }
 
-.cardContact:hover
-{
-  box-shadow: 0px 30px 100px -10px rgba(0, 0, 0, 0.4);
-}
+// .cardContact:hover
+// {
+//   box-shadow: 0px 30px 100px -10px rgba(0, 0, 0, 0.4);
+// }
 
 
 .Contact_wrapper
@@ -43,7 +43,6 @@ will-change: transform;
 {
   width:120%;
   height:calc(100vh + 20%);
-  background-image: url("/assets/images/contact/desk_texture.webp");
   background-size: cover;
   position: absolute;
   left:-10%;

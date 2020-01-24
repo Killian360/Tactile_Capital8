@@ -3,6 +3,14 @@ Body
   background-color:#0F5F6B!important;
 }
 
+@media screen and (max-width: 768px) {
+
+.scroll-horizontal-wrapper
+{
+  height:100vh;
+}
+}
+
 .SwipeIcon
 {
   position: absolute;
@@ -47,8 +55,6 @@ opacity:0 !important;
 
 .SlideInit_bg
 {
-  background: rgb(2,0,36);
-  background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(88,9,121,1) 35%, rgba(0,255,209,1) 100%);  height:100%;
   width:100%;
   z-index:-2;
   position:absolute;
@@ -57,7 +63,6 @@ opacity:0 !important;
 .SlideOther_bg
 {
   background: rgb(2,0,36);
-background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgba(0,255,209,1) 100%);
   width:100%;
   z-index:-2;
   height:100%;
@@ -68,6 +73,7 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
   height: 100vh;
   width: 100vw;
   background-color:#0F5F6B;
+  overflow:hidden;
   @media screen and (min-width: 768px) {
 
   }
@@ -81,27 +87,29 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
   }
 }
 
+
 .Slider {
+  display: inline-flex;
   height: 100vh;
-  display: flex;
-  position:absolute;
   z-index:1;
-  touch-action: none;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
    -khtml-user-select: none; /* Konqueror HTML */
      -moz-user-select: none; /* Old versions of Firefox */
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; 
-    transition: all 0.35s ease !important;
-    -webkit-transition: all 0.35s ease;   // Old Chrome, Safari
-    -moz-transition: all 0.35s ease;      // Old Firefox
-    -ms-transition: all 0.35s ease;       // Internet Explorer
-    -o-transition: all 0.35s ease;        // Old Opera
-    transition: all 0.35s ease;           // Newer Browsers
-    transform: translate3d(0, 0, 0);
+          will-change: opacity,transform;
+          visibility: visible;
+          white-space: nowrap;
+
+    @media screen and (max-width: 768px) {
+      white-space: inherit;
+    }
+
 
   &.clicked {
+
+  
 
     @media screen and (min-width: 768px) {
 
@@ -147,6 +155,15 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
 
     &-next {
       right: 25px;
+      background: url("/assets/svgs/arrow-next.svg");
+      position:absolute;
+      right:3vw;
+      bottom:50px;
+      width:45px;
+      height:45px;
+      z-index:5;
+      background-size:cover;
+      background-position: center;
     }
 
     &:hover {
@@ -178,10 +195,17 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
   overflow: hidden;
   min-width: 0;
   opacity:0;
-  
+  flex-basis:33.33vw;
+
+  @media screen and (max-width: 768px) {
+    flex-basis:100vw;
+      
+  }
+
   &.animate {
     flex-basis: 100vw !important;
     flex-grow: 0;
+
 
     .Slide-content {
       pointer-events: none;
@@ -273,7 +297,7 @@ background: linear-gradient(325deg, rgba(2,0,36,1) 0%, rgba(9,98,121,1) 35%, rgb
 
     &-img {
       position: absolute;
-      opacity: 0.75;
+      opacity: 1;
       width:100%;
       height:100%;
       z-index: -1;

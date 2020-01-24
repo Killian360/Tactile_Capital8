@@ -4,11 +4,16 @@ import axios from 'axios'
 import orderBy from 'lodash.orderby'
 import SVG from 'react-inlinesvg'
 import { connect } from "react-redux";
-import {store} from './combinereducers.js';
+import { store } from './combinereducers.js';
+import HorizontalScroll from '../scroll/'
+import { useScroll } from "react-use-gesture";
+import { animated, useSpring } from "react-spring";
 
 import {
   TweenMax,
   TimelineMax,
+  Power4,
+  Power3,
 } from "gsap"
 
 import labels from '../../constants/labels'
@@ -16,6 +21,7 @@ import labels from '../../constants/labels'
 import Button from '../../components/Button'
 
 import './Home.scss'
+
 
 const mapStateToProps = state => {
   return {
@@ -60,9 +66,11 @@ class Home extends React.Component {
     }
     this.tl = new TimelineMax();
     this.slider = React.createRef();
-    this.handleNext = this.handleNext.bind(this);
-    this.handlePrev = this.handlePrev.bind(this);
-    this.scrollHorizontally = this.scrollHorizontally.bind(this);
+    // this.handleNext = this.handleNext.bind(this);
+    // this.handlePrev = this.handlePrev.bind(this);
+    this.handleNextMobile = this.handleNextMobile.bind(this);
+    this.handlePrevMobile = this.handlePrevMobile.bind(this);
+    // this.scrollHorizontally = this.scrollHorizontally.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.ismobile = !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
@@ -71,39 +79,41 @@ class Home extends React.Component {
 
   handleClick(index, url, as, event) {
 
-    var SliderWidth = document.getElementById('Slider').offsetWidth;
-    var element = document.getElementById('Slider').childNodes[index];
-    var position = element.getBoundingClientRect();
+    // var position = element.getBoundingClientRect();
 
     let update = this.state.data.map(() => false);
     update[index] = true;
 
     //Recenter element before expand
-    var SliderWrapper = document.getElementsByClassName("Slider ");
-    var ChildrenNbr = document.getElementById('Slider').children.length;
+    var SliderWrapper = document.getElementsByClassName('Slider');
+    var ChildrenNbr = document.querySelector('.scroll-horizontal-wrapper').children.length;
+    
+
+    var SliderWidth = window.innerWidth/3 * ChildrenNbr;
 
     var positionLeft = SliderWidth / ChildrenNbr * (index - 1);
+     
+    console.log(SliderWrapper);
+    var indexCenter;
+
+    this.ismobile ? (index < ChildrenNbr - 2) ? indexCenter = index - 1 : indexCenter = ChildrenNbr - 3 : indexCenter = index;
 
     //Dispatch center index for Redux store
-    var indexCenter;
-    
-    this.ismobile ? (index < ChildrenNbr-2) ? indexCenter = index-1 : indexCenter=ChildrenNbr-3 : indexCenter = index;
-
-    console.log(indexCenter);
-
-    store.dispatch({type: 'setIndex', index:indexCenter});
+    store.dispatch({ type: 'setIndex', index: indexCenter });
 
     // Animate slider & title
     var slideTitle = document.getElementsByClassName('Slide-content-title bold');
-    this.ismobile && TweenMax.set(SliderWrapper, { x: -positionLeft });
+   
+    this.ismobile && TweenMax.to(SliderWrapper,0.4, { x: -positionLeft ,y:0,z:0, force3D:true});
+   
     this.updateArrow();
     this.deactivateArrow();
 
     setTimeout(() => {
-      this.ismobile && TweenMax.set(SliderWrapper, { x: 0 });
-      TweenMax.to(slideTitle, 0.25, { opacity: 0, y: 15, delay: 0.85 });
-      this.setState({ slideAnimated: update, isClicked: true });;
-    }, 450)
+      this.ismobile && TweenMax.set(SliderWrapper, { x: 0});
+      this.setState({ slideAnimated: update, isClicked:true});
+      TweenMax.to(slideTitle, 0.35, { opacity: 0, y: 15, delay: 0.85 });
+    }, 650)
 
     setTimeout(function () {
       Router.push(url, as, { shallow: true });
@@ -111,15 +121,13 @@ class Home extends React.Component {
   }
 
 
-  deactivateArrow()
-  {
-    TweenMax.set(".Slider-arrow", { pointerEvents: "none"});
-    TweenMax.set(".Slider", { pointerEvents: "none"});
+  deactivateArrow() {
+    TweenMax.set(".Slider-arrow", { pointerEvents: "none" });
+    TweenMax.set(".Slider", { pointerEvents: "none" });
   }
 
-  handleClickNews(index, url, as)
-  {
-      Router.push(url, as, { shallow: true });
+  handleClickNews(index, url, as) {
+    Router.push(url, as, { shallow: true });
   }
 
   followAnimation(update) {
@@ -138,38 +146,40 @@ class Home extends React.Component {
       .then(axios.spread((posts, neighbourhood, building, services, spaces) => {
         const that = this;
         const data = orderBy([...neighbourhood.data, ...building.data, ...services.data, ...spaces.data], ['date'], ['desc']);
-        const innerWidth = window.innerWidth < 768 ? window.innerWidth : window.innerWidth / 3;
+        const innerWidth = window.innerWidth;
         const totalWidth = innerWidth * (data.length + 1);
 
         if (that._isMounted) {
-           this.setState({
-          post: posts.data[0],
-          data: data,
-          slideAnimated: data.map(() => false),
-          widthSlider: totalWidth,
-          widthSlide: innerWidth,
-        }
-        
-        );
-        var tl = new TimelineMax({ repeat: 0 });
-        tl.staggerTo(".Slide", 0.1, {opacity: 1 }, 0.1);
-        var SliderWrapper = document.getElementsByClassName("Slider ");
-        var ChildrenNbr = document.getElementById('Slider').children.length;
-        var SliderWidth = document.getElementById('Slider').offsetWidth;
+          this.setState({
+            post: posts.data[0],
+            data: data,
+            slideAnimated: data.map(() => false),
+            widthSlider: totalWidth,
+            widthSlide: innerWidth,
+          }
 
-        var scrollValue = -SliderWidth / ChildrenNbr; 
-        TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
-        console.log(store.getState().SLIDER_INDEXATION);
-        setTimeout(() => { this.updateArrow(); }, 350);
-      }
-        if (!this.ismobile) {
-          window.addEventListener('touchstart', this.handleTouchStart, true);
-          window.addEventListener('touchmove', this.handleTouchMove, true);
-        } else if (window.addEventListener) {
-          window.addEventListener('wheel', this.scrollHorizontally, true);
-        } else {
-          window.attachEvent("onmousewheel", this.scrollHorizontally, true);
+          );
+          console.log()
+          var tl = new TimelineMax({ repeat: 0 });
+          tl.staggerTo(".Slide", 0.1, { opacity: 1 }, 0.1);
+          // var SliderWrapper = document.getElementsByClassName("scroll-horizontal-wrapper ");
+          // var ChildrenNbr = document.querySelector('.scroll-horizontal-wrapper').children.length;
+          // var SliderWidth = ChildrenNbr * window.innerWidth/3;
+
+          // var scrollValue = -SliderWidth / ChildrenNbr;
+          // TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION });
+          setTimeout(() => { this.updateArrow(); }, 350);
+          store.dispatch({ type: 'setIndex', index: 0 });
         }
+        if (!this.ismobile) {
+          window.addEventListener('touchstart', this.handleTouchStart, { passive: false });
+          window.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+        }
+        //  else if (window.addEventListener) {
+        //   window.addEventListener('wheel', this.scrollHorizontally, { passive: false });
+        // } else {
+        //   window.attachEvent("onmousewheel", this.scrollHorizontally, { passive: false });
+        // }
       })
       )
   }
@@ -190,16 +200,16 @@ class Home extends React.Component {
 
     var xDiff = this.xDown - xUp;
     var yDiff = this.yDown - yUp;
- 
+
     var speed = 30;
 
     var SliderWrapper = document.getElementsByClassName("Slider ");
 
     if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
       if (xDiff > 4) {
-        this.handleNext();
+        this.handleNextMobile();
       } else {
-        this.handlePrev();
+        this.handlePrevMobile();
       }
     }
     /* reset values */
@@ -209,7 +219,7 @@ class Home extends React.Component {
 
   scrollDown() {
     var SliderWrapper = document.getElementsByClassName("Slider ");
-    var scrollSpeed = 150;
+    var scrollSpeed = 250;
     TweenMax.to(SliderWrapper, 0.01, { x: "+=" + scrollSpeed, ease: Power4.easeOut });
   }
 
@@ -229,166 +239,237 @@ class Home extends React.Component {
     }
   }
 
+//   scrollHorizontally = (e) => {
+//     e.preventDefault()
+//     console.log("gogogo")
+//     var container = document.getElementById('Slider')
+//     var containerScrollPosition = document.getElementById('Slider').scrollLeft
+//     container.scrollTo({
+//         top: 0,
+//         left: containerScrollPosition + e.deltaY,
+//         behaviour: 'smooth' //if you want smooth scrolling
+//     })
+// }
 
-  scrollHorizontally(e) {
+
+  // scrollHorizontally(event) {
+  //   console.log("scroll");
+  //   var e = window.event || event;
+
+  //   var SliderWrapper = document.getElementsByClassName("Slider ");
+  //   var SliderWrapperId = document.getElementById("Slider");
+
+  //   var Slideroffsets = document.getElementById('Slider').getBoundingClientRect();
+  //   var SliderWidth = document.getElementById('Slider').offsetWidth;
+
+  //   var SlideroffsetsLeft = Slideroffsets.left;
+  //   var SlideroffsetsRight = Slideroffsets.right;
+  //   var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.deltaY)));
+  //   var scrollSpeed = delta * 100; // Janky jank <<<<<<<<<<<<<<
+
+  //  TweenMax.set(SliderWrapper, {
+  //     rotation: 0.01,
+  //     force3D: true
+  //   });
+
+  //   //Wheel down
+
+  //   if (SlideroffsetsRight <= window.innerWidth + 300 && delta < 1) {
+
+  //     TweenMax.to(SliderWrapper, 0.75, { x: -SliderWidth + window.innerWidth, ease:Power4.easeOut });
+  //     this.ismobile && document.querySelector('.Slider-arrow-next').classList.add('disabled');
+
+  //   } else if (SlideroffsetsLeft <= 0 && delta < 1) {
+
+      
+  //     // TweenMax.to(SliderWrapper, {duration: 2, scrollTo: {x: 200}});
+  //     // TweenMax.to(SliderWrapper, 0.75, { transform: "translateX(" + -position + "px)", ease: Power4.easeOut });
+
+  //     TweenMax.to(SliderWrapper,0.25, { x: "+=" + scrollSpeed }, Power1.easeOut);
+
+  //     this.ismobile && document.querySelector('.Slider-arrow-next').classList.remove('disabled');
+  //     this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
+  //     this.upadteIndexation();
+  //   }
+
+  //   // Wheel up
+
+  //   if (SlideroffsetsRight >= SliderWidth - 300 && delta >= 1) {
+
+  //     TweenMax.to(SliderWrapper, 0.75, { x: 0 ,  ease:Power4.easeOut});
+  //     this.ismobile && document.querySelector('.Slider-arrow-prev').classList.add('disabled');
+  //   } else if (SlideroffsetsRight < SliderWidth && delta >= 1) {
+
+  //     TweenMax.to(SliderWrapper,0.35, { x: "+=" + scrollSpeed });
+
+  //     this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
+  //     this.ismobile && document.querySelector('.Slider-arrow-next').classList.remove('disabled');
+  //     this.upadteIndexation();
+  //   }
+
+  //   e.preventDefault();
+  // }
+
+  // upadteIndexation() {
+  //   var Slideroffsets = document.getElementById('Slider').getBoundingClientRect();
+  //   var SlideroffsetsLeft = Slideroffsets.left;
+  //   var SliderWidth = document.getElementById('Slider').offsetWidth;
+  //   var ChildrenNbr = document.getElementById('Slider').children.length;
+
+  //   if (!this.ismobile) {
+  //     // for (var i = 0; i < ChildrenNbr-1; i++) {
+  //     //   if (SlideroffsetsLeft <= -SliderWidth / ChildrenNbr * store.getState().SLIDER_INDEXATION) {
+  //     //     store.dispatch({type: 'IncrementIndexation'});
+  //     //   }
+  //     // };
+  //   } else {
+  //     if (SlideroffsetsLeft <= (-SliderWidth / ChildrenNbr - 100) * store.getState().SLIDER_INDEXATION) {
+  //       store.dispatch({ type: 'IncrementIndexation' });
+  //     } else if (SlideroffsetsLeft > -SliderWidth / ChildrenNbr * store.getState().SLIDER_INDEXATION) {
+  //       store.dispatch({ type: 'DecrementIndexation' });
+  //     }
+  //   }
+  // }
+
+
+handlePrevMobile() {
     var SliderWrapper = document.getElementsByClassName("Slider ");
-    var Slideroffsets = document.getElementById('Slider').getBoundingClientRect();
-    var SliderWidth = document.getElementById('Slider').offsetWidth;
-
-    var SlideroffsetsLeft = Slideroffsets.left;
-    var SlideroffsetsRight = Slideroffsets.right;
-
-    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.deltaY)));
-    var scrollSpeed = delta * 50; // Janky jank <<<<<<<<<<<<<<
-
-    //Wheel down
-
-    console.log(window.innerWidth/7);
-    if (SlideroffsetsRight <= window.innerWidth + 300 && delta < 1) {
-      TweenMax.set(SliderWrapper, { x: -SliderWidth + window.innerWidth });
-      this.ismobile && document.querySelector('.Slider-arrow-next').classList.add('disabled');
-
-    } else if (SlideroffsetsLeft <= 0 && delta < 1) {
-
-      TweenMax.set(SliderWrapper, { x: "+=" + scrollSpeed, rotation:0.01, z:0.01, force3D:true });
-
-      this.ismobile && document.querySelector('.Slider-arrow-next').classList.remove('disabled');
-      this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
-      this.upadteIndexation();
-    }
-
-    //Wheel up
-
-    if (SlideroffsetsRight >= SliderWidth -300 && delta >= 1) {
-
-      TweenMax.set(SliderWrapper, { x: 0 });
-      this.ismobile && document.querySelector('.Slider-arrow-prev').classList.add('disabled');
-    } else if (SlideroffsetsRight < SliderWidth && delta >= 1) {
-
-      TweenMax.set(SliderWrapper, { x: "+=" + scrollSpeed, rotation:0.01, z:0.01, force3D:true });
-
-      this.ismobile && document.querySelector('.Slider-arrow-prev').classList.remove('disabled');
-      this.ismobile && document.querySelector('.Slider-arrow-next').classList.remove('disabled');
-      this.upadteIndexation();
-    }
-  }
-
-  upadteIndexation() {
-    var Slideroffsets = document.getElementById('Slider').getBoundingClientRect();
-    var SlideroffsetsLeft = Slideroffsets.left;
-    var SliderWidth = document.getElementById('Slider').offsetWidth;
     var ChildrenNbr = document.getElementById('Slider').children.length;
-
-    if (!this.ismobile) {
-      // for (var i = 0; i < ChildrenNbr-1; i++) {
-      //   if (SlideroffsetsLeft <= -SliderWidth / ChildrenNbr * store.getState().SLIDER_INDEXATION) {
-      //     store.dispatch({type: 'IncrementIndexation'});
-      //   }
-      // };
-    } else {
-     if (SlideroffsetsLeft <= (-SliderWidth/ChildrenNbr -100) * store.getState().SLIDER_INDEXATION)
-     {
-      store.dispatch({type: 'IncrementIndexation'});
-    } else if (SlideroffsetsLeft > -SliderWidth / ChildrenNbr * store.getState().SLIDER_INDEXATION)
-    {
-      store.dispatch({type: 'DecrementIndexation'});
-    }
-    }
-  }
-
-
-  handlePrev() {
+  
     store.dispatch({type: 'DecrementIndexation'});
-
-    var SliderWrapper = document.getElementsByClassName("Slider ");
-    var SliderWidth = document.getElementById('Slider').offsetWidth;
-
     //Scroll value
-    var ChildrenNbr = document.getElementById('Slider').children.length;
+    var SliderWidth = document.getElementById('Slider').offsetWidth;
+  
     var scrollValue = -SliderWidth / ChildrenNbr;
-
-    if (store.getState().SLIDER_INDEXATION >= 0) {
-      TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
-    } else {
-      TweenMax.set(SliderWrapper, { x: 0});
+  
+    var maxIndex = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? ChildrenNbr-1 : ChildrenNbr-3;
+  
+    if ( store.getState().SLIDER_INDEXATION >= 0) {
+      TweenMax.to(SliderWrapper,0.35,  { x: scrollValue * store.getState().SLIDER_INDEXATION});
+    } else if (store.getState().SLIDER_INDEXATION < 0) {
       store.dispatch({type: 'setIndex', index:0});
+      TweenMax.to(SliderWrapper,0.35,  { x: 0});
     }
     this.setState({swipeIcon:false})
-    setTimeout(() => { this.updateArrow(); }, 350);
+}
 
+handleNextMobile() {
+  var SliderWrapper = document.getElementsByClassName("Slider ");
+  var ChildrenNbr = document.getElementById('Slider').children.length;
+
+  store.dispatch({type: 'IncrementIndexation'});
+
+  //Scroll value
+  var SliderWidth = document.getElementById('Slider').offsetWidth;
+
+  var scrollValue = -SliderWidth / ChildrenNbr;
+
+  var maxIndex = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? ChildrenNbr-1 : ChildrenNbr-3;
+
+  if ( store.getState().SLIDER_INDEXATION < maxIndex) {
+    TweenMax.to(SliderWrapper,0.35, { x: scrollValue * store.getState().SLIDER_INDEXATION});
+  } else if (store.getState().SLIDER_INDEXATION >= maxIndex) {
+    store.dispatch({type: 'setIndex', index:maxIndex});
+    TweenMax.to(SliderWrapper, 0.35, { x: scrollValue * store.getState().SLIDER_INDEXATION});
   }
+  this.setState({swipeIcon:false})
+}
 
-  rightClick()
-  {
+  // handlePrev() {
+  //   store.dispatch({ type: 'DecrementIndexation' });
+  //   var isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
+  //   var SliderWrapper = document.getElementsByClassName("Slider ");
+
+
+  //   //Scroll value
+  //   var ChildrenNbr = document.querySelector('.Slider ').children.length;
+  //   var SliderWidth = isMobile ? ChildrenNbr * window.innerWidth : ChildrenNbr * window.innerWidth/3;
+
+  //   var scrollValue = -SliderWidth / ChildrenNbr;
+     
+  //   if (store.getState().SLIDER_INDEXATION >= 0) {
+  //     TweenMax.to(SliderWrapper,0.75, { x: scrollValue * store.getState().SLIDER_INDEXATION, ease : Power3.easeOut });
+  //   } else {
+  //     TweenMax.to(SliderWrapper,0.75, { x: 0 , ease : Power3.easeOut });
+  //     store.dispatch({ type: 'setIndex', index: 0 });
+  //   }
+  //   this.setState({ swipeIcon: false })
+  //   setTimeout(() => { this.updateArrow(); }, 350);
+
+  // }
+
+  // handleNext() {
+  //   store.dispatch({ type: 'IncrementIndexation' });
+  //   var isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
+  //   var SliderWrapper = document.getElementsByClassName("Slider ");
+  //   var ChildrenNbr = document.querySelector('.Slider ').children.length;
+
+  //   //Scroll value
+  //   var SliderWidth = isMobile ? ChildrenNbr * window.innerWidth : ChildrenNbr * window.innerWidth/3;
+
+  //   var scrollValue = -SliderWidth / ChildrenNbr;
+
+  //   var maxIndex = isMobile ? ChildrenNbr - 1 : ChildrenNbr - 3;
+  //   console.log(scrollValue);
+
+  //   if (store.getState().SLIDER_INDEXATION < maxIndex + 1) {
+  //     TweenMax.to(SliderWrapper,0.75, { x: scrollValue * store.getState().SLIDER_INDEXATION, ease : Power3.easeOut });
+  //     console.log("anim bordel");
+  //   } else if (store.getState().SLIDER_INDEXATION > maxIndex) {
+  //     store.dispatch({ type: 'setIndex', index: maxIndex });
+  //     TweenMax.to(SliderWrapper,0.75, { x: scrollValue * store.getState().SLIDER_INDEXATION, ease : Power3.easeOut });
+  //   }
+  //   this.setState({ swipeIcon: false })
+  //   setTimeout(() => { this.updateArrow(); }, 350);
+  // }
+
+  
+  rightClick() {
     this.handleNext();
   }
 
-  leftClick()
-  {
+  leftClick() {
     this.handlePrev();
   }
 
-  handleNext() {
-    var SliderWrapper = document.getElementsByClassName("Slider ");
-    var ChildrenNbr = document.getElementById('Slider').children.length;
-
-    store.dispatch({type: 'IncrementIndexation'});
-
-    //Scroll value
-    var SliderWidth = document.getElementById('Slider').offsetWidth;
-
-    var scrollValue = -SliderWidth / ChildrenNbr;
-
-    var maxIndex = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? ChildrenNbr-1 : ChildrenNbr-3;
-
-    if ( store.getState().SLIDER_INDEXATION < maxIndex+1) {
-      TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
-    } else if (store.getState().SLIDER_INDEXATION > maxIndex) {
-      store.dispatch({type: 'setIndex', index:maxIndex});
-      TweenMax.set(SliderWrapper, { x: scrollValue * store.getState().SLIDER_INDEXATION});
-    }
-    this.setState({swipeIcon:false})
-    this.updateArrow();
-  }
 
   updateArrow() {
     var ChildrenNbr = document.getElementById('Slider').children.length;
     var elemPrev = document.querySelector('.Slider-arrow-prev');
     var elemNext = document.querySelector('.Slider-arrow-next');
-    TweenMax.set(".Slider-arrow", { pointerEvents: "auto"});
-    TweenMax.set(".Slider", { pointerEvents: "auto"});
-
-    console.log("updateee", ChildrenNbr - 3,store.getState().SLIDER_INDEXATION );
+    TweenMax.set(".Slider-arrow", { pointerEvents: "auto" });
+    TweenMax.set(".Slider", { pointerEvents: "auto" });
 
     if (store.getState().SLIDER_INDEXATION > 0 && store.getState().SLIDER_INDEXATION < ChildrenNbr - 3) {
       (this.ismobile && elemPrev) && elemPrev.classList.remove('disabled');
-      (this.ismobile && elemNext) && elemNext.classList.remove('disabled'); 
-    } else if (store.getState().SLIDER_INDEXATION >= ChildrenNbr - 3)  {
-      (this.ismobile && elemNext) && elemNext.classList.add('disabled'); 
+      (this.ismobile && elemNext) && elemNext.classList.remove('disabled');
+    } else if (store.getState().SLIDER_INDEXATION >= ChildrenNbr - 3) {
+      (this.ismobile && elemNext) && elemNext.classList.add('disabled');
     }
-      else if (store.getState().SLIDER_INDEXATION == 0)
-       {
-        (this.ismobile && elemPrev) && elemPrev.classList.add('disabled'); 
-       }
+    else if (store.getState().SLIDER_INDEXATION == 0) {
+      (this.ismobile && elemPrev) && elemPrev.classList.add('disabled');
+    }
   }
 
   componentWillUnmount() {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      window.removeEventListener('touchstart', this.handleTouchStart, true);
-      window.removeEventListener('touchmove', this.handleTouchMove, true);
-    } 
-
-    if (window.removeEventListener) {
-      window.removeEventListener("wheel", this.scrollHorizontally, true);
-    } else {
-      // IE 6/7/8
-      window.detachEvent("onmousewheel", this.scrollHorizontally, true);
+      window.removeEventListener('touchstart', this.handleTouchStart, false);
+      window.removeEventListener('touchmove', this.handleTouchMove, false);
     }
+
+    // if (window.removeEventListener) {
+    //   window.removeEventListener("wheel", this.scrollHorizontally, { passive: false });
+    // } else {
+    //   // IE 6/7/8
+    //   window.detachEvent("onmousewheel", this.scrollHorizontally, { passive: false });
+    // }
     this._isMounted = false;
   }
 
   render() {
-    const { post, data, slideAnimated, isClicked,swipeIcon, widthSlider, widthSlide } = this.state;
+    const { post, data, slideAnimated, isClicked, swipeIcon, widthSlider, widthSlide } = this.state;
     const { locale } = this.props;
 
     if (!data) {
@@ -396,53 +477,103 @@ class Home extends React.Component {
     }
     return (
       <div className="Home">
-        {this.ismobile &&
-        <div><PrevArrow className="Slider-arrow Slider-arrow-prev" onClick={this.leftClick.bind(this)} />
-        <NextArrow className="Slider-arrow Slider-arrow-next" onClick={this.rightClick.bind(this)} />
-        </div>
-        }
+        {/* {this.ismobile &&
+          <div><PrevArrow className="Slider-arrow Slider-arrow-prev" onClick={this.leftClick.bind(this)} />
+            <NextArrow className="Slider-arrow Slider-arrow-next" onClick={this.rightClick.bind(this)} />
+          </div>
+        } */}
         {(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) &&
           <div className={`SwipeIcon ${(swipeIcon ? '' : 'invisible')}`}>
-         <SVG
-                        src="/assets/svgs/swipe.svg"
-                        style={{ fill: "#fff" }}
-                      />
-        </div>
-        }
-        <div id="Slider" className={`Slider ${(isClicked ? 'clicked' : '')}`} style={{ width: widthSlider }}>
-          <div className="Slide" id="SlideInit" style={{ flexBasis: widthSlide }}>
-            <div onClick={this.handleClickNews.bind(this,0, '/news/[slug]', `/news/${post.slug}`)}>
-              <div className="Slide-content">
-                <p className="Slide-content-subtitle post">News</p>
-                <h3 className="Slide-content-title bold">{post.title.rendered}</h3>
-                <Button className="Slide-content-button Button-initslide">{labels[locale].home.news.button}</Button>
-                {/* <p className="Slide-content-number thin">NEWS</p> */}
-                <div className={`Slide-content-img ${(isClicked ? 'clicked' : '')}`} style={{ backgroundImage: `url(${post.acf.image.url})` }} ></div>
-                <div className="SlideInit_bg"></div>
-              </div>
-              </div>
+            <SVG
+              src="/assets/svgs/swipe.svg"
+              style={{ fill: "#fff" }}
+            />
           </div>
-          {data.map((page, index) => (
-            <div className={`Slide ${(slideAnimated[index + 1] ? 'animate' : '')}`}
-              key={index}
-              onClick={this.handleClick.bind(this, (index + 1), '/[type]/[slug]', `/${page.type}/${page.slug}`)}
-              style={{ flexBasis: widthSlide }}>
-              <div className="Slide-wrapper">
-                <div className="Slide-content">
-                  <p className="Slide-content-subtitle">{page.acf.subtitle}</p>
-                  <h3 className="Slide-content-title bold">{page.title.rendered}</h3>
-                  <Button className="Slide-content-button">{labels[locale].home.pages.button}</Button>
-                  <p className="Slide-content-number thin">{("0" + (index + 1)).slice(-2)}</p>
-                  <div className={`Slide-content-img ${(isClicked ? 'clicked' : '')}`} style={{ backgroundImage: `url(${page.acf.slider[0].image.url})` }} ></div>
-                  <div className="SlideOther_bg"></div>
-                </div>
-              </div>
-            </div>
-          ))}
+        }
+        {this.ismobile ? (
+        <HorizontalScroll 
+        reverseScroll = { true }
+        className     = "Slider_wrapper"
+    >
+    <div id="Slider" className={`Slider ${(isClicked ? 'clicked' : '')}`}>
+      <div className="Slide" id="SlideInit">
+        <div onClick={this.handleClickNews.bind(this, 0, '/news/[slug]', `/news/${post.slug}`)}>
+          <div className="Slide-content">
+            <p className="Slide-content-subtitle post">News</p>
+            <h3 className="Slide-content-title bold">{post.title.rendered}</h3>
+            <Button className="Slide-content-button Button-initslide">{labels[locale].home.news.button}</Button>
+            {/* <p className="Slide-content-number thin">NEWS</p> */}
+            <div className={`Slide-content-img ${(isClicked ? 'clicked' : '')}`} style={{ backgroundImage: `url(${post.acf.image.url})` }} ></div>
+            <div className="SlideInit_bg"></div>
+          </div>
         </div>
       </div>
+      {data.map((page, index) => (
+        <div className={`Slide ${(slideAnimated[index + 1] ? 'animate' : '')}`}
+          key={index}
+          onClick={this.handleClick.bind(this, (index + 1), '/[type]/[slug]', `/${page.type}/${page.slug}`)}
+          >
+          <div className="Slide-wrapper">
+            <div className="Slide-content">
+              <p className="Slide-content-subtitle">{page.acf.subtitle}</p>
+              <h3 className="Slide-content-title bold">{page.title.rendered}</h3>
+              <Button className="Slide-content-button">{labels[locale].home.pages.button}</Button>
+              <p className="Slide-content-number thin">{("0" + (index + 1)).slice(-2)}</p>
+              <div className={`Slide-content-img ${(isClicked ? 'clicked' : '')}`} style={{ backgroundImage: `url(${page.acf.slider[0].image.url})` }} ></div>
+              <div className="SlideOther_bg"></div>
+            </div>
+          </div>
+          
+        </div>
+        
+      ))}
+      </div>
+              </HorizontalScroll>
+
+        ): (
+          <React.Fragment
+      >
+          <div className="scroll-horizontal-wrapper">
+        <div id="Slider" className={`Slider ${(isClicked ? 'clicked' : '')}`} style={{ width: widthSlider }}>
+        <div className="Slide" id="SlideInit">
+          <div onClick={this.handleClickNews.bind(this, 0, '/news/[slug]', `/news/${post.slug}`)}>
+            <div className="Slide-content">
+              <p className="Slide-content-subtitle post">News</p>
+              <h3 className="Slide-content-title bold">{post.title.rendered}</h3>
+              <Button className="Slide-content-button Button-initslide">{labels[locale].home.news.button}</Button>
+              {/* <p className="Slide-content-number thin">NEWS</p> */}
+              <div className={`Slide-content-img ${(isClicked ? 'clicked' : '')}`} style={{ backgroundImage: `url(${post.acf.image.url})` }} ></div>
+              <div className="SlideInit_bg"></div>
+            </div>
+          </div>
+        </div>
+        {data.map((page, index) => (
+          <div className={`Slide ${(slideAnimated[index + 1] ? 'animate' : '')}`}
+            key={index}
+            onClick={this.handleClick.bind(this, (index + 1), '/[type]/[slug]', `/${page.type}/${page.slug}`)}
+            >
+            <div className="Slide-wrapper">
+              <div className="Slide-content">
+                <p className="Slide-content-subtitle">{page.acf.subtitle}</p>
+                <h3 className="Slide-content-title bold">{page.title.rendered}</h3>
+                <Button className="Slide-content-button">{labels[locale].home.pages.button}</Button>
+                <p className="Slide-content-number thin">{("0" + (index + 1)).slice(-2)}</p>
+                <div className={`Slide-content-img ${(isClicked ? 'clicked' : '')}`} style={{ backgroundImage: `url(${page.acf.slider[0].image.url})` }} ></div>
+                <div className="SlideOther_bg"></div>
+              </div>
+            </div>
+          </div>
+          
+        ))}
+        </div>
+        </div>
+                </React.Fragment>
+        )
+        
+        }
+        </div>
     )
   }
 }
 
-export default connect(mapStateToProps) (Home)
+export default connect(mapStateToProps)(Home)

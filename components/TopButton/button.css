@@ -1,6 +1,6 @@
 #TopButton
 {
-  background: linear-gradient(0deg, rgba(93,20,117,1) 0%, rgba(38,59,157,1) 36%, rgba(18,88,134,1) 68%, rgba(18,88,134,1) 100%);
+  background: linear-gradient(0deg, rgba(8,96,119,1) 0%, rgba(18,118,134,1) 36%, rgba(18,88,134,1) 68%, rgba(18,88,134,1) 100%);
   border-radius:50px;
   width:6vh;
   height:6vh;
@@ -22,7 +22,7 @@ background-size:1px 200px;
 
 #TopButton
 {
-  background: linear-gradient(0deg, rgba(93,20,117,1) 0%, rgba(38,59,157,1) 36%, rgba(18,88,134,1) 68%, rgba(18,88,134,1) 100%);
+  background: linear-gradient(0deg, rgba(8,96,119,1) 0%, rgba(18,118,134,1) 36%, rgba(18,88,134,1) 68%, rgba(18,88,134,1) 100%);
   border-radius:50px;
   width:6vh;
   height:6vh;

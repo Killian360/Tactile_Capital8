@@ -107,6 +107,24 @@ margin:0 !important;
     }
   }
 
+  .Post-content-arrows-left , .Post-content-arrows-right
+  {
+    transition:all 0.35s;
+  }
+
+
+.Post-content-arrows-left:hover
+{
+  transform: translateX(-10px);
+  transition:all 0.35s;
+}
+
+.Post-content-arrows-right:hover
+{
+   transform: translateX(10px);
+  transition:all 0.35s;
+}
+
   &-content {
 
     @media screen and (min-width: 768px) {
@@ -170,7 +188,9 @@ margin:0 !important;
       background: #f3f3f3;
       z-index:5;
       transition:all 0.55s;
-      
+    
+
+
       @media screen and (min-width: 768px) {
         margin-bottom: 0;
         bottom: 30px;
@@ -186,7 +206,7 @@ margin:0 !important;
         width: 22px;
         margin: 0 5px;
         cursor: pointer;
-        height: 40px;
+        height: 40px;     
 
         @media screen and (min-width: 768px) {
           width: 30px;

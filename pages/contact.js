@@ -20,8 +20,6 @@ function Card(props) {
   return (
     <animated.div
       className="cardContact"
-      onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
-      onMouseLeave={() => set({ xys: [0, 0, 1] })}
       style={{ transform: animationprops.xys.interpolate(trans) }}
     >
       {props.children}
@@ -59,15 +57,15 @@ class Contact extends React.Component {
     }
   }
 
-  mouseIsEnter()
-  {
-    TweenMax.to(".contact_background", 1.5, {filter:"blur(1.5px)", scale:0.9});
-  }
+  // mouseIsEnter()
+  // {
+  //   TweenMax.to(".contact_background", 1.5, {filter:"blur(1.5px)", scale:0.9});
+  // }
 
-  mouseIsLeaving()
-  {
-    TweenMax.to(".contact_background", 1.5, {filter:"blur(0px)", scale:1});
-  }
+  // mouseIsLeaving()
+  // {
+  //   TweenMax.to(".contact_background", 1.5, {filter:"blur(0px)", scale:1});
+  // }
 
   render() {
     const { data } = this.state;
@@ -83,7 +81,7 @@ class Contact extends React.Component {
           <h2 className="Contact-title bold">{data.title.rendered}</h2>
           <Card>
             {/* <div className="testtitre">{data.content.title}</div> */}
-            <div onMouseEnter={this.mouseIsEnter.bind(this)} onMouseLeave={this.mouseIsLeaving.bind(this)} className="Contact-content" dangerouslySetInnerHTML={{ __html: data.content.rendered }}></div>
+            <div className="Contact-content" dangerouslySetInnerHTML={{ __html: data.content.rendered }}></div>
           </Card>
         </div>
         <div className="contact_background"></div>

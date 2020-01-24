@@ -11,10 +11,7 @@ import * as animateBar from "../components/Nav/animation";
 import './Layout.scss';
 
 import {
-  TweenMax,
-  Power1,
-  TimelineMax,
-  Linear
+  TweenMax
 } from "gsap"
 
 class Layout extends React.Component {

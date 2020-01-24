@@ -9,9 +9,6 @@ import labels from '../../constants/labels'
 
 import {
   TweenMax,
-  Power1,
-  TimelineMax,
-  Linear
 } from "gsap"
 
 class Post extends React.Component {
@@ -32,8 +29,8 @@ class Post extends React.Component {
     const that = this;
 
     axios.all([
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?slug=${slug}`)
+      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?filter[lang]=${locale}`),
+      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?slug=${slug}`),
     ])
       .then(axios.spread(function(posts, post) {
         if (that._isMounted) {
@@ -41,9 +38,6 @@ class Post extends React.Component {
           posts: posts.data,
           post: post.data[0]
         })
-        console.log(post);
-
-        ;}
         TweenMax.to(".Post-content-subtitle",0.15,{opacity:1,y:0});
         TweenMax.to(".Post-content-title",0.15,{opacity:1,y:0, delay:0.15});
         TweenMax.to(".Post-content-text",0.15,{opacity:1,y:0, delay:0.25});
@@ -51,6 +45,7 @@ class Post extends React.Component {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           TweenMax.set(".Post-content-arrows",{css:{bottom:"0px"}});
           }
+        ;}
       }));
   }
 
@@ -91,12 +86,13 @@ class Post extends React.Component {
         <div className="Post">
           <div className="Post-wrapper">
           <div className="Post-content-arrows">
-                <Link href="/news/[slug]" as={`/news/${posts[prevIndex].slug}`}>
+                {posts.length>1 && <Link href="/news/[slug]" as={`/news/${posts[prevIndex].slug}`}>
                   <SVG
                     src="../../assets/svgs/arrow-prev.svg"
                     className="Post-content-arrows-left"
                     style={{ fill: "#999" }} />
                 </Link>
+                 }  
                 <Link href="/news">
                <div className="allNews">
                <SVG
@@ -105,12 +101,13 @@ class Post extends React.Component {
                      />
                  {labels[locale].footer.back.news}</div>
                 </Link>
-                <Link href="/news/[slug]" as={`/news/${posts[nextIndex].slug}`}>
+                {posts.length>1 && <Link href="/news/[slug]" as={`/news/${posts[nextIndex].slug}`}>
                   <SVG
                     src="../../assets/svgs/arrow-next.svg"
                     className="Post-content-arrows-right"
                     style={{ fill: "#999" }} />
                 </Link>
+                 }
               </div>
             <div className="Post-content">
               <p className="Post-content-subtitle">{post.acf.subtitle}</p>

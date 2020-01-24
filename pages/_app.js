@@ -12,7 +12,6 @@ import Layout from '../layouts';
 import { gsap } from 'gsap'
 import { CSSPlugin } from 'gsap'
 
-
 // Force CSSPlugin to not get dropped during build
 gsap.registerPlugin(CSSPlugin)
 

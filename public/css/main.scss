@@ -1,6 +1,5 @@
 html {
   -ms-overflow-style: -ms-autohiding-scrollbar;
-  overflow-x: hidden;
 }
 
 html { height: 100%; margin: 0; 
@@ -45,7 +44,6 @@ html { height: 100%; margin: 0;
 }
 
 body { height: 100%; margin: 0;
-  -ms-overflow-style: none;
 }
 body::-webkit-scrollbar {
   display: none;

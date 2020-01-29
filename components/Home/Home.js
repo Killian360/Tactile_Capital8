@@ -497,6 +497,7 @@ handleNextMobile() {
         <HorizontalScroll 
         reverseScroll = { true }
         className     = "Slider_wrapper"
+        config        = {{ stiffness: 400, damping: 50 }}
     >
     <div id="Slider" className={`Slider ${(isClicked ? 'clicked' : '')}`}>
       <div className="Slide" id="SlideInit">

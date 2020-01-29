@@ -1694,7 +1694,7 @@ var ScrollHorizontal = function (_Component) {
       isEdge ? normalized.pixelY*0.67 :
       normalized.pixelY;
 
-      console.log(mouseY);
+      console.log(normalized.deltaMode);
 
       // Bring in the existing animation values
       var animationValue = this.state.animValues;
@@ -1841,7 +1841,6 @@ ScrollHorizontal.propTypes = {
   config: PropTypes.object,
   style: PropTypes.object,
   className: PropTypes.string,
-  children: PropTypes.array.isRequired,
   animValues: PropTypes.number
 };
 

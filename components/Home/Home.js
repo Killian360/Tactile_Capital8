@@ -140,11 +140,11 @@ class Home extends React.Component {
 
   fetchData(locale) {
     axios.all([
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?pagetags=5&filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/quartier?pagetags=5&filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/immeuble?pagetags=5&filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/services?pagetags=5&filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/espaces?pagetags=5&filter[lang]=${locale}`)
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?pagetags=5&filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/quartier?pagetags=5&filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/immeuble?pagetags=5&filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/services?pagetags=5&filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/espaces?pagetags=5&filter[lang]=${locale}`)
     ])
       .then(axios.spread((posts, neighbourhood, building, services, spaces) => {
         const that = this;

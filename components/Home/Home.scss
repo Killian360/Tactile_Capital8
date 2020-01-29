@@ -74,7 +74,6 @@ opacity:0 !important;
   width: 100vw;
   background-color:#0F5F6B;
   overflow:hidden;
-  position:relative;
 
   @media screen and (min-width: 768px) {
 
@@ -92,7 +91,7 @@ opacity:0 !important;
 
 .Slider {
   display: inline-flex;
-  height: 100vh;
+  height: 100%;
   z-index:1;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -103,6 +102,8 @@ opacity:0 !important;
           will-change: opacity,transform;
           visibility: visible;
           white-space: nowrap;
+    min-height: 0;
+    flex-grow: 1;
 
     @media screen and (max-width: 768px) {
       white-space: inherit;

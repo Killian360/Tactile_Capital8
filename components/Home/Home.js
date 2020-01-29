@@ -6,8 +6,7 @@ import SVG from 'react-inlinesvg'
 import { connect } from "react-redux";
 import { store } from './combinereducers.js';
 import HorizontalScroll from '../scroll/'
-import { useScroll } from "react-use-gesture";
-import { animated, useSpring } from "react-spring";
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 import {
   TweenMax,
@@ -229,6 +228,8 @@ class Home extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.fetchData(this.props.locale);
+    this.targetElement = document.querySelector('body');
+    disableBodyScroll(this.targetElement);
     //Animate Swipe icon
     // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
     // {
@@ -469,6 +470,7 @@ handleNextMobile() {
     //   window.detachEvent("onmousewheel", this.scrollHorizontally, { passive: false });
     // }
     this._isMounted = false;
+    clearAllBodyScrollLocks();
   }
 
   render() {

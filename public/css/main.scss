@@ -44,6 +44,8 @@ html { height: 100%; margin: 0;
 }
 
 body { height: 100%; margin: 0;
+  -webkit-overflow-scrolling: auto;
+  overscroll-behavior: none;
 }
 body::-webkit-scrollbar {
   display: none;

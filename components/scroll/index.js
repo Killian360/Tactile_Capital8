@@ -1794,7 +1794,7 @@ var ScrollHorizontal = function (_Component) {
         height: height || '100%',
         width: width || '100%',
         overflow: 'hidden',
-        position: 'relative'
+        position: 'fixed'
       }, style);
 
       return React.createElement(
@@ -1817,7 +1817,7 @@ var ScrollHorizontal = function (_Component) {
             var scrollingElementStyles = {
               transform: 'translate3d(' + z + 'px, 0,0)',
               height: '100%',
-              position: 'absolute',
+              position: 'fixed',
               willChange: 'transform'
             };
 

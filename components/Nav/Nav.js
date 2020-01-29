@@ -38,10 +38,10 @@ class Nav extends React.Component {
 
   fetchData(locale) {
     axios.all([
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/quartier?pagetags=14&filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/immeuble?pagetags=14&filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/services?pagetags=14&filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/espaces?pagetags=14&filter[lang]=${locale}`)
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/quartier?pagetags=14&filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/immeuble?pagetags=14&filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/services?pagetags=14&filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/espaces?pagetags=14&filter[lang]=${locale}`)
     ])
       .then(axios.spread((neighbourhood, building, services, spaces) => {
         this.setState({

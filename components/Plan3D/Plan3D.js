@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import SVG from 'react-inlinesvg'
-import Viewer from "./Viewer";
+import Viewer from "./viewer";
 
 import './Plan3D.scss'
 

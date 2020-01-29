@@ -11,27 +11,33 @@
   &-title {
     text-align: center;
     margin: 50px 0;
-    color: #0F5F6B;
+    color: #FFF;
     font-size: 4rem;
     line-height: 4rem;
   }
 
   &-content {
+    & a {
+
+      color:#87b3b9;
+      
+    }
+
     & h4 {
       font-size: 1.1rem;
       font-family: 'Poppins-Bold';
       text-transform: uppercase;
       letter-spacing: 3px;
-      color: #0F5F6B;
+      color: #FFF;
       margin-top: 25px;
     }
 
     & p {
-      color: #999;
+      color: #c5c5c5;
       font-size: 1.2rem;
 
       &.primary {
-        color: #0F5F6B;
+        color: #FFF;
         font-size: 1.4rem;
       }
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DOM from 'react-dom';
+import normalizeWheel from 'normalize-wheel';
 
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -1678,11 +1679,22 @@ var ScrollHorizontal = function (_Component) {
     key: 'onScrollStart',
     value: function onScrollStart(e) {
       var _this2 = this;
-      // If scrolling on x axis, change to y axis. Otherwise, just get the y deltas.
-      // (Basically, this for Apple mice that allow horizontal scrolling by default)
-      var rawData = Math.max(-1, Math.min(1, (e.wheelDelta || e.deltaY)));
-      // var mouseY = Math.floor(rawData);
-      var mouseY = rawData*70;
+
+      // var rawData = Math.max(-1, Math.min(1, (e.wheelDelta || e.deltaY)));
+      
+      var isFirefox = typeof InstallTrigger !== 'undefined';
+      var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+      var isEdge = /Edge/.test(navigator.userAgent);
+
+      const normalized = normalizeWheel(e);
+
+      var mouseY = 
+      isFirefox ? normalized.pixelY*0.84:
+      isSafari ? normalized.pixelY*8.33 :
+      isEdge ? normalized.pixelY*0.67 :
+      normalized.pixelY;
+
+      console.log(mouseY);
 
       // Bring in the existing animation values
       var animationValue = this.state.animValues;

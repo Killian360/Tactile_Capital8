@@ -260,7 +260,7 @@ componentWillUnmount()
             <React.Fragment>
               {page.acf['block_image'].map((image, index) => (
                 <div className="Page-image" key={index}>
-                  {page.type == "espaces" ? <div className="blueprintWrapper"><Plan><img src={image.image.url} alt={image.image.alt} /></Plan></div> : <img src={image.image.url} alt={image.image.alt} />}
+                  {page.type == "espaces" ? <img src={image.image.url} alt={image.image.alt} /> : <img src={image.image.url} alt={image.image.alt} />}
                 </div>
               ))}
             </React.Fragment>

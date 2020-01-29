@@ -30,9 +30,9 @@ class Capital8 extends App {
     localStorage.setItem('locale', locale);
 
     if(pageProps.query && pageProps.query.type !== undefined && pageProps.query.slug !== undefined) {
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${pageProps.query.type}?slug=${pageProps.query.slug}`)
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/${pageProps.query.type}?slug=${pageProps.query.slug}`)
         .then(function(page){
-          axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${pageProps.query.type}/${page.data[0].acf.trad_id}`)
+          axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/${pageProps.query.type}/${page.data[0].acf.trad_id}`)
             .then(function(translatedPage){
               Router.push(`/[type]/[slug]`, `/${translatedPage.data.type}/${translatedPage.data.slug}`)
             });
@@ -40,12 +40,12 @@ class Capital8 extends App {
     }
 
     if(pageProps.query && pageProps.query.type === undefined && pageProps.query.slug !== undefined) {
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?slug=${pageProps.query.slug}`)
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?slug=${pageProps.query.slug}`)
         .then(function(post){
           if(!post.data[0].acf.trad_id) {
             Router.push(`/news`);
           } else {
-            axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts/${post.data[0].acf.trad_id}`)
+            axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/posts/${post.data[0].acf.trad_id}`)
               .then(function(translatedPost){
                 Router.push(`/news/[slug]`, `/news/${translatedPost.data.slug}`)
               });

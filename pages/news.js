@@ -28,7 +28,7 @@ class Posts extends React.Component {
   fetchData(locale) {
     const that = this;
 
-    axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?filter[lang]=${locale}`)
+    axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?filter[lang]=${locale}`)
       .then(function(response) {
         if (that._isMounted) {
         that.setState({posts: response.data});

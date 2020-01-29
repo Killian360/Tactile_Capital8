@@ -41,7 +41,7 @@ class Contact extends React.Component {
     const slug = locale === 'en' ? 'contact-2' : 'contact';
     const that = this;
 
-    axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/pages?slug=${slug}`)
+    axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/pages?slug=${slug}`)
       .then(function (response) {
         that.setState({ data: response.data[0] });
       });

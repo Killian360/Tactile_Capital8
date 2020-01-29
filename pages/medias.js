@@ -39,7 +39,7 @@ class Medias extends React.Component {
   }
 
   static async getInitialProps({ req }) {
-    const res = await fetch(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/media?mediatags=13&per_page=99`)
+    const res = await fetch(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/media?mediatags=13&per_page=99`)
     const json = await res.json()
     return { medias: json }
   }

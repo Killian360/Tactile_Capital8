@@ -57,12 +57,12 @@ class Page extends React.Component {
   static async getInitialProps({ query }) {
     const { type, slug } = query;
 
-      const res = await fetch(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?slug=${slug}`);
+      const res = await fetch(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?slug=${slug}`);
       const page = await res.json();
     //   axios({
     //     method: 'get',
     //     responseType: 'json',
-    //     url: `http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?slug=${slug}`,
+    //     url: `https://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?slug=${slug}`,
     // })
     //     .then(response => {
     //         self.setState({
@@ -114,7 +114,7 @@ componentDidMount(){
     (this.props.query.type == "espaces") ? [245,396] : 
     [0,0];
 
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?exclude=${page.id},${indexID[0]},${indexID[1]}&filter[lang]=${locale}`)
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/${type}?exclude=${page.id},${indexID[0]},${indexID[1]}&filter[lang]=${locale}`)
       .then((function (pages) {    
         if (that._isMounted) {
           that.setState({

@@ -29,8 +29,8 @@ class Post extends React.Component {
     const that = this;
 
     axios.all([
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?filter[lang]=${locale}`),
-      axios.get(`http://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?slug=${slug}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?filter[lang]=${locale}`),
+      axios.get(`https://admincapital8.tactile-communication.com/wp-json/wp/v2/posts?slug=${slug}`),
     ])
       .then(axios.spread(function(posts, post) {
         if (that._isMounted) {

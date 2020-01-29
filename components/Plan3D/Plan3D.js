@@ -72,7 +72,7 @@ class Plan3D extends React.Component {
           <SVG
             src="../../assets/svgs/360.svg"
             className="Plan3D-caption"
-            style={{ fill: "#fff" }}
+            style={{ fill: "#ffffff" }}
             />
         </div>
         <div className="Plan3D_gradient"></div>

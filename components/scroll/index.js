@@ -1563,12 +1563,8 @@ exports.reorderKeys = _interopRequire(reorderKeys_1);
 
 unwrapExports(reactMotion);
 var reactMotion_1 = reactMotion.Motion;
-var reactMotion_2 = reactMotion.StaggeredMotion;
-var reactMotion_3 = reactMotion.TransitionMotion;
 var reactMotion_4 = reactMotion.spring;
 var reactMotion_5 = reactMotion.presets;
-var reactMotion_6 = reactMotion.stripStyle;
-var reactMotion_7 = reactMotion.reorderKeys;
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -1690,11 +1686,11 @@ var ScrollHorizontal = function (_Component) {
 
       var mouseY = 
       isFirefox ? normalized.pixelY*0.84:
-      isSafari ? normalized.pixelY*8.33 :
+      isSafari ? normalized.pixelY*7.33 :
       isEdge ? normalized.pixelY*0.67 :
       normalized.pixelY;
 
-      console.log(normalized.deltaMode);
+      // console.log(normalized.deltaMode);
 
       // Bring in the existing animation values
       var animationValue = this.state.animValues;
@@ -1779,7 +1775,7 @@ var ScrollHorizontal = function (_Component) {
     key: 'render',
     value: function render() {
       var _this4 = this;
-
+      
       var _props = this.props,
           config = _props.config,
           style = _props.style,

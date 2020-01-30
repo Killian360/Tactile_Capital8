@@ -1686,7 +1686,7 @@ var ScrollHorizontal = function (_Component) {
 
       var mouseY = 
       isFirefox ? normalized.pixelY*0.84:
-      isSafari ? normalized.pixelY*7.33 :
+      isSafari ? normalized.pixelY*6.33 :
       isEdge ? normalized.pixelY*0.67 :
       normalized.pixelY;
 

@@ -1686,11 +1686,11 @@ var ScrollHorizontal = function (_Component) {
 
       var mouseY = 
       isFirefox ? normalized.pixelY*0.84:
-      isSafari ? normalized.pixelY*6.33 :
+      isSafari ? normalized.pixelY*4.33 :
       isEdge ? normalized.pixelY*0.67 :
       normalized.pixelY;
 
-      // console.log(normalized.deltaMode);
+      console.log(normalized.pixelY);
 
       // Bring in the existing animation values
       var animationValue = this.state.animValues;

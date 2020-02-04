@@ -93,7 +93,6 @@ class Home extends React.Component {
 
 
     var positionLeft = SliderWidth / ChildrenNbr * (index - 1) + OffsetWidth;
-    console.log(OffsetWidth);
 
     var indexCenter;
 
@@ -161,7 +160,6 @@ class Home extends React.Component {
           }
 
           );
-          console.log()
           var tl = new TimelineMax({ repeat: 0 });
           tl.staggerTo(".Slide", 0.1, { opacity: 1 }, 0.1);
           // var SliderWrapper = document.getElementsByClassName("scroll-horizontal-wrapper ");

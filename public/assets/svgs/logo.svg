@@ -8,5 +8,4 @@
             <path id="Tracé_12" data-name="Tracé 12" class="cls-1" d="M136.1,6.93v22.9a6.08,6.08,0,0,0,5.7,6.43,4.45,4.45,0,0,0,.73,0,9,9,0,0,0,4.21-1.11l-.86-3.73a6.42,6.42,0,0,1-2.58.64,2.51,2.51,0,0,1-2.74-2.26c0-.07,0-.15,0-.23V6.93Z" transform="translate(-2.54 -2.98)" />
             <rect id="Rectangle_2" data-name="Rectangle 2" class="cls-1" x="76.93" y="11.6" width="4.45" height="21.16" />   
             <path id="Tracé_13" data-name="Tracé 13" class="cls-1" d="M78.94,6.88A2.76,2.76,0,1,0,81.7,4.11a2.76,2.76,0,0,0-2.76,2.77h0" transform="translate(-2.54 -2.98)" />
-    <image src="./public/assets/svgs/logo.png" xlink:href="" />
-	</svg>
+</svg>

@@ -23,7 +23,7 @@
     "babel-polyfill": "^6.26.0",
     "body-scroll-lock": "^2.6.4",
     "command-line-args": "^4.0.7",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "framer": "^1.1.7",
     "framer-motion": "^1.8.3",
     "gsap": "^3.0.5",
